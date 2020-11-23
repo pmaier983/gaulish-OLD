@@ -1,0 +1,16 @@
+# dependencies
+/node_modules
+
+# testing
+/coverage
+/cypress/screenshots
+
+# production
+.next
+/out
+
+# secrets
+.env
+
+# misc
+.DS_Store
