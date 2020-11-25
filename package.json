@@ -25,6 +25,11 @@
       "pre-commit": "lint-staged"
     }
   },
+  "lint-staged": {
+    "*.{tsx,ts,js,jsx}": [
+      "npm run lint"
+    ]
+  },
   "devDependencies": {
     "@next/bundle-analyzer": "^10.0.2",
     "@types/node": "^14.14.9",
