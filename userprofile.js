@@ -1,18 +1,28 @@
-const myHeaders = new Headers()
+var myHeaders = new Headers()
 myHeaders.set("Cache-Control", "no-store")
-const urlParams = new URLSearchParams(window.location.search)
-let tokens
-const domain = "https://gaulish.auth.us-east-1.amazoncognito.com/"
-const region = "us-east-1"
-const appClientId = "7ck48tonlctna2qf3njqpqn1km"
-const userPoolId = "us-east-1_SiWOmGPzw"
-const redirectURI = "https://gaulish.io/index.html"
+var urlParams = new URLSearchParams(window.location.search)
+var tokens
+var domain = "gaulish"
+var region = "us-east-1"
+var appClientId = "t5j2po234u7b3cha128fbkcpe"
+var userPoolId = "us-east-1_SiWOmGPzw"
+var redirectURI = "https://gaulish.io"
 
 var key_id
 var keys
 
+const WeirdURL =
+  "https://https//gaulish.auth.us-east-1.amazoncognito.com.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&state=140300021000000001578247000770220000&client_id=t5j2po234u7b3cha128fbkcpe&redirect_uri=https://gaulish.io&scope=openid&code_challenge_method=S256&code_challenge=5ZQMF0EaEU8Fa23LyLtMsKFORQAUFgVh0-juhA5PDUo"
+const ExampleURL =
+  "https://mydomain.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=ad398u21ijw3s9w3939&redirect_uri=https://YOUR_APP/redirect_uri&state=STATE&scope=openid+profile+aws.cognito.signin.user.admin"
+const workingURL =
+  "https://gaulish.auth.us-east-1.amazoncognito.com/login?client_id=t5j2po234u7b3cha128fbkcpe&response_type=code&scope=email+openid&redirect_uri=https://gaulish.io"
+const BetterURL =
+  "https://gaulish.auth.us-east-1.amazoncognito.com.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&state=72484000031000072023060000600031006001&client_id=t5j2po234u7b3cha128fbkcpe&redirect_uri=gaulish.io&scope=openid&code_challenge_method=S256&code_challenge=WufmHWdsn8mQxVR4lI2rLlgG9RIoGsB-x8kgpknmboM"
+
 //verify token
 async function verifyToken(token) {
+  console.log("verify token:", token)
   //get Cognito keys
   keys_url =
     "https://cognito-idp." +
@@ -35,6 +45,7 @@ async function verifyToken(token) {
   //search for the kid key id in the Cognito Keys
   const key = keys.find((key) => key.kid === key_id)
   if (key === undefined) {
+    console.log("Public key not found in Cognito jwks.json")
     return "Public key not found in Cognito jwks.json"
   }
 
@@ -43,20 +54,24 @@ async function verifyToken(token) {
   var isValid = KJUR.jws.JWS.verifyJWT(token, keyObj, { alg: ["RS256"] })
   if (isValid) {
   } else {
+    console.log("Signature verification failed")
     return "Signature verification failed"
   }
 
   //verify token has not expired
   var tokenPayload = parseJWTPayload(token)
   if (Date.now() >= tokenPayload.exp * 1000) {
+    console.log("Token expired")
     return "Token expired"
   }
 
   //verify app_client_id
   var n = tokenPayload.aud.localeCompare(appClientId)
   if (n != 0) {
+    console.log("Token was not issued for this audience")
     return "Token was not issued for this audience"
   }
+  console.log("verified!")
   return "verified"
 }
 
@@ -75,6 +90,7 @@ const decodePayload = (payload) => {
 
 //Parse JWT Payload
 const parseJWTPayload = (token) => {
+  console.log("JWTPayload", token)
   const [, payload] = token.split(".")
   const jsonPayload = decodePayload(payload)
 
@@ -83,6 +99,7 @@ const parseJWTPayload = (token) => {
 
 //Parse JWT Header
 const parseJWTHeader = (token) => {
+  console.log("the token:", token)
   const [header] = token.split(".")
   const jsonHeader = decodePayload(header)
 
@@ -101,6 +118,7 @@ const getRandomString = () => {
 
 //Encrypt a String with SHA256
 const encryptStringWithSHA256 = async (str) => {
+  console.log("str", str)
   const PROTOCOL = "SHA-256"
   const textEncoder = new TextEncoder()
   const encodedData = textEncoder.encode(str)
@@ -109,6 +127,7 @@ const encryptStringWithSHA256 = async (str) => {
 
 //Convert Hash to Base64-URL
 const hashToBase64url = (arrayBuffer) => {
+  console.log("arrayBuffer", arrayBuffer)
   const items = new Uint8Array(arrayBuffer)
   const stringifiedArrayHash = items.reduce(
     (acc, i) => `${acc}${String.fromCharCode(i)}`,
@@ -125,7 +144,8 @@ const hashToBase64url = (arrayBuffer) => {
 
 // Main Function
 async function main() {
-  const code = urlParams.get("code")
+  var code = urlParams.get("code")
+  console.log("we are in main!", code)
 
   //If code not present then request code else request tokens
   if (code == null) {
@@ -138,8 +158,8 @@ async function main() {
     sessionStorage.setItem("code_verifier", code_verifier)
 
     // Create code challenge
-    const arrayHash = await encryptStringWithSHA256(code_verifier)
-    const code_challenge = hashToBase64url(arrayHash)
+    var arrayHash = await encryptStringWithSHA256(code_verifier)
+    var code_challenge = hashToBase64url(arrayHash)
     sessionStorage.setItem("code_challenge", code_challenge)
 
     // Redirtect user-agent to /authorize endpoint
@@ -185,18 +205,20 @@ async function main() {
         }
       )
         .then((response) => {
+          console.log("response:", response)
           return response.json()
         })
         .then((data) => {
           // Verify id_token
           tokens = data
-          const idVerified = verifyToken(tokens.id_token)
+          var idVerified = verifyToken(tokens.id_token)
           Promise.resolve(idVerified).then(function (value) {
             if (value.localeCompare("verified")) {
               alert("Invalid ID Token - " + value)
               return
             }
           })
+          console.log("tokens, idVerified:", tokens, idVerified)
           // Display tokens
           document.getElementById("id_token").innerHTML = JSON.stringify(
             parseJWTPayload(tokens.id_token),
@@ -225,10 +247,13 @@ async function main() {
         }
       )
         .then((response) => {
+          console.log("response", response)
           return response.json()
         })
         .then((data) => {
           // Display user information
+          console.log("data", JSON.stringify(data))
+
           document.getElementById("userInfo").innerHTML = JSON.stringify(
             data,
             null,
