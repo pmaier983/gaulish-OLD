@@ -11,15 +11,6 @@ var redirectURI = "https://gaulish.io"
 var key_id
 var keys
 
-const WeirdURL =
-  "https://https//gaulish.auth.us-east-1.amazoncognito.com.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&state=140300021000000001578247000770220000&client_id=t5j2po234u7b3cha128fbkcpe&redirect_uri=https://gaulish.io&scope=openid&code_challenge_method=S256&code_challenge=5ZQMF0EaEU8Fa23LyLtMsKFORQAUFgVh0-juhA5PDUo"
-const ExampleURL =
-  "https://mydomain.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=ad398u21ijw3s9w3939&redirect_uri=https://YOUR_APP/redirect_uri&state=STATE&scope=openid+profile+aws.cognito.signin.user.admin"
-const workingURL =
-  "https://gaulish.auth.us-east-1.amazoncognito.com/login?client_id=t5j2po234u7b3cha128fbkcpe&response_type=code&scope=email+openid&redirect_uri=https://gaulish.io"
-const BetterURL =
-  "https://gaulish.auth.us-east-1.amazoncognito.com.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&state=72484000031000072023060000600031006001&client_id=t5j2po234u7b3cha128fbkcpe&redirect_uri=gaulish.io&scope=openid&code_challenge_method=S256&code_challenge=WufmHWdsn8mQxVR4lI2rLlgG9RIoGsB-x8kgpknmboM"
-
 //verify token
 async function verifyToken(token) {
   console.log("verify token:", token)
