@@ -1,0 +1,13 @@
+{
+  "name": "query-gaulish-db",
+  "version": "1.0.0",
+  "description": "Query GaulishDB",
+  "main": "./queryGaulishDB.js",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+  },
+  "dependencies": {
+    "pg": "^8.5.1"
+  }
+}
