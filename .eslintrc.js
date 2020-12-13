@@ -51,6 +51,7 @@ module.exports = {
     "@typescript-eslint/interface-name-prefix": OFF,
     "@typescript-eslint/semi": OFF,
     "@typescript-eslint/no-unused-vars": ERROR,
+    "@typescript-eslint/no-var-requires": WARN,
     "import/prefer-default-export": OFF,
     "space-infix-ops": OFF,
     "jsx-a11y/accessible-emoji": WARN,

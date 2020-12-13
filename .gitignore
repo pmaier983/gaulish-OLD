@@ -8,6 +8,7 @@ node_modules
 # production
 .next
 /out
+build
 
 # secrets
 .env

@@ -4,7 +4,7 @@ const Home: React.FC = () => {
   return (
     <div>
       Hello world! This is also Gaulish! I&apos;ve been working on the SQL of
-      gaulish, so low commit velocity
+      gaulish, so low commit velocity.
     </div>
   )
 }
