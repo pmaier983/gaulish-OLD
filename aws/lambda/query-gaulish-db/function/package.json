@@ -1,0 +1,26 @@
+{
+  "name": "query-gaulish-db",
+  "version": "1.0.0",
+  "description": "Run a SQL query on GaulishDB",
+  "author": "Phillip Maier",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^8.5.1"
+  },
+  "scripts": {
+    "dev": "tsnd -r dotenv/config --respawn src/app.ts dotenv_config_path=${PWD}/../../../../.env -- isTesting ",
+    "dev:docker": "tsc && docker build -t gaulish . && docker run --rm --env-file=../../../../.env --name gaulish -p 9000:8080 gaulish",
+    "dev:docker:noBuild": "docker build -t gaulish . && docker run --rm --env-file=../../../../.env --name gaulish -p 9000:8080 gaulish",
+    "build": "tsc && docker build -t gaulish .",
+    "build:docker": "docker build -t gaulish ."
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/node": "^13.13.5",
+    "@types/pg": "^7.14.7",
+    "aws-sdk": "^2.655.0",
+    "dotenv": "^8.2.0",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^3.8.3"
+  }
+}
