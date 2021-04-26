@@ -48,10 +48,12 @@ module.exports = {
     "react/prop-types": OFF,
     "react/jsx-filename-extension": [1, { extensions: [".jsx", ".tsx"] }],
     "@typescript-eslint/explicit-function-return-type": OFF,
+    "@typescript-eslint/explicit-module-boundary-types": OFF,
     "@typescript-eslint/interface-name-prefix": OFF,
     "@typescript-eslint/semi": OFF,
     "@typescript-eslint/no-unused-vars": ERROR,
     "@typescript-eslint/no-var-requires": WARN,
+    "@typescript-eslint/ban-types": WARN, // WARN as Codegen generates a lot of {}
     "import/prefer-default-export": OFF,
     "space-infix-ops": OFF,
     "jsx-a11y/accessible-emoji": WARN,
