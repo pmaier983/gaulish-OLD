@@ -1,5 +1,4 @@
 {
-  // TODO setup vite? https://github.com/vitejs/vite
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
