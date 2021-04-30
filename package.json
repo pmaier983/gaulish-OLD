@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
     "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-react-refresh": "^2.4.0",
