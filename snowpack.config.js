@@ -11,7 +11,7 @@ module.exports = {
     [
       "@snowpack/plugin-webpack",
       {
-        // TODO: look into options
+        // TODO: build a proper production bundle
       },
     ],
     [
