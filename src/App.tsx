@@ -1,14 +1,35 @@
 import React from "react"
+import { useQuery } from "react-query"
+import { request, gql } from "graphql-request"
+
 import { AppWrapper } from "./AppWrapper"
 
 const UnwrappedApp = () => {
-  return <div />
+  const a = useQuery("tiles", async () => {
+    return await request(
+      "http://localhost:8080/graphql",
+      gql`
+        query {
+          getAllTiles {
+            id
+            tile_id
+            x
+            y
+          }
+        }
+      `
+    )
+  })
+
+  return <div>{JSON.stringify(a)}</div>
 }
 
-const App: React.FC = () => (
-  <AppWrapper>
-    <UnwrappedApp />
-  </AppWrapper>
-)
+const WrappedApp: React.FC = () => {
+  return (
+    <AppWrapper>
+      <UnwrappedApp />
+    </AppWrapper>
+  )
+}
 
-export { App }
+export { WrappedApp as App }
