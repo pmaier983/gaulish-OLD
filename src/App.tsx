@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { AppWrapper } from "./AppWrapper"
 
 const StyledWrapper = styled.div`
+  height: 100%;
   background-color: ${({ theme }) => theme.color.gray[300]};
 `
 
