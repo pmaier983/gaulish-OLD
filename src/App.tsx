@@ -1,27 +1,14 @@
 import React from "react"
-import { useQuery } from "react-query"
-import { request, gql } from "graphql-request"
+import styled from "styled-components"
 
 import { AppWrapper } from "./AppWrapper"
 
-const App = () => {
-  const a = useQuery("tiles", async () => {
-    return await request(
-      "http://localhost:8080/graphql",
-      gql`
-        query {
-          getAllTiles {
-            id
-            tile_id
-            x
-            y
-          }
-        }
-      `
-    )
-  })
+const StyledWrapper = styled.div`
+  background-color: ${({ theme }) => theme.color.gray[300]};
+`
 
-  return <div>{JSON.stringify(a)}</div>
+const App = () => {
+  return <StyledWrapper>Login</StyledWrapper>
 }
 
 const WrappedApp: React.FC = () => {
