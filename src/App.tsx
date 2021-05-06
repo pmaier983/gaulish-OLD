@@ -4,7 +4,7 @@ import { request, gql } from "graphql-request"
 
 import { AppWrapper } from "./AppWrapper"
 
-const UnwrappedApp = () => {
+const App = () => {
   const a = useQuery("tiles", async () => {
     return await request(
       "http://localhost:8080/graphql",
@@ -27,7 +27,7 @@ const UnwrappedApp = () => {
 const WrappedApp: React.FC = () => {
   return (
     <AppWrapper>
-      <UnwrappedApp />
+      <App />
     </AppWrapper>
   )
 }
