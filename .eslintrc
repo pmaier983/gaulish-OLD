@@ -46,6 +46,7 @@
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "@typescript-eslint/semi": 0,
     "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "import/prefer-default-export": 0,
     "space-infix-ops": 0,
     "jsx-a11y/accessible-emoji": 1
