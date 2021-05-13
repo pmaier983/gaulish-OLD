@@ -12,7 +12,7 @@ export const fetchWithBaseURL: QueryFunction = ({
     Array.isArray(queryKey) && queryKey.length >= 2
       ? queryKey[queryKey.length - 1]
       : {}
-  return fetch(`${process.env.REACT_APP_API_BASE_URL}/${path}`, fetchParams)
+  return fetch(`${process.env.API_URL}/${path}`, fetchParams)
     .then((res) => res.json())
     .then((res) => {
       if (res?.success && !res?.success) {
