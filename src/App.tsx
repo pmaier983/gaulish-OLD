@@ -9,6 +9,8 @@ const StyledWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.gray[300]};
 `
 
+// handle Shared server <-> client types
+// TODO remove lodash from the app
 const App = () => {
   // TODO: fetch from local storage
   const isLoggedIn = false
