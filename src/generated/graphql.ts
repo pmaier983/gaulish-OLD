@@ -31,6 +31,7 @@ export type Query = {
   getTilesAroundTile?: Maybe<Array<Maybe<Tile>>>
   getTileByID?: Maybe<Tile>
   verifyToken: Scalars["Boolean"]
+  getUserByUsername?: Maybe<User>
 }
 
 export type QueryGetTilesWithinRectangleArgs = {
@@ -47,10 +48,22 @@ export type QueryGetTileByIdArgs = {
   tileId?: Maybe<Scalars["Int"]>
 }
 
+export type QueryGetUserByUsernameArgs = {
+  username?: Maybe<Scalars["String"]>
+}
+
 export type Tile = Node & {
   __typename?: "Tile"
   id: Scalars["ID"]
   tile_id?: Maybe<Scalars["Int"]>
   x?: Maybe<Scalars["Int"]>
   y?: Maybe<Scalars["Int"]>
+}
+
+export type User = Node & {
+  __typename?: "User"
+  id: Scalars["ID"]
+  email?: Maybe<Scalars["String"]>
+  time_created?: Maybe<Scalars["Int"]>
+  uuid?: Maybe<Scalars["Int"]>
 }

@@ -1,14 +1,15 @@
 import React from "react"
 import styled from "styled-components"
 
-import { AppWrapper } from "./AppWrapper"
-import { LoginPage } from "./pages/LoginPage"
+import { AppWrapper } from "@/AppWrapper"
+import { LoginPage } from "@/pages/LoginPage"
 
 const StyledWrapper = styled.div`
   height: 100%;
   background-color: ${({ theme }) => theme.color.gray[300]};
 `
 
+// TODO: setup 404 page
 // handle Shared server <-> client types
 // TODO remove lodash from the app
 const App = () => {

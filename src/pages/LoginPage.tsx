@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React from "react"
 import styled from "styled-components"
+
+import { useUserContext } from "@/context/UserProvider"
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -13,18 +12,28 @@ const StyledWrapper = styled.div`
 `
 
 export const LoginPage = () => {
+  const { isLoggedIn, user, logoutUser } = useUserContext()
+  if (isLoggedIn) {
+    return (
+      <>
+        <h1>Hello</h1>
+        <div>{JSON.stringify(user)}</div>
+        <button onClick={logoutUser}>Logout</button>
+      </>
+    )
+  }
   return (
     <StyledWrapper>
-      <a
-        target="_blank"
-        role="button"
+      <button
         onClick={() => {
-          window.open(process.env.SNOWPACK_PUBLIC_API_URL, "_self")
+          window.open(
+            `${process.env.SNOWPACK_PUBLIC_API_URL_DOMAIN}/google`,
+            "_self"
+          )
         }}
-        rel="noreferrer"
       >
         Login
-      </a>
+      </button>
     </StyledWrapper>
   )
 }
