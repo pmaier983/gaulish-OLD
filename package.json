@@ -13,6 +13,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint . --fix",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
+    "generate-types": "graphql-codegen --config codegen.yml && npm run lint",
     "deploy:aws": "npm run build && npm run export && dotenv -- cross-var aws s3 cp --recursive ./out %S3_BUCKET_NAME%",
     "invalidate:aws": "dotenv -- cross-var aws cloudfront create-invalidation --distribution-id %CLOUDFRONT_DISTRIBUTION_ID% --paths \"/*\""
   },
@@ -26,6 +27,8 @@
   "devDependencies": {
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/typescript": "^1.22.0",
     "@snowpack/plugin-babel": "^2.1.7",
     "@snowpack/plugin-dotenv": "^2.1.0",
     "@snowpack/plugin-react-refresh": "^2.4.0",
