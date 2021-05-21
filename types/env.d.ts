@@ -7,7 +7,7 @@ declare global {
       SNOWPACK_PUBLIC_S3_BUCKET_NAME: string
       SNOWPACK_PUBLIC_AWS_ACCOUNT_NUMBER: string
       SNOWPACK_PUBLIC_AWS_REGION: string
-      SNOWPACK_PUBLIC_API_URL: string
+      SNOWPACK_PUBLIC_API_URL_DOMAIN: string
 
       NODE_ENV: "development" | "production"
 
