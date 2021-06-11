@@ -14,7 +14,7 @@ interface UseCustomQuery<Result> {
   query: string
   variables?: Variables
   queryOptions?: UseQueryOptions<Result>
-  requestHeaders?: Headers
+  requestHeaders?: HeadersInit
 }
 
 const useCustomQuery = <Result = Query>({

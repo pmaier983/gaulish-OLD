@@ -45,6 +45,7 @@ const getUser = (token?: string) => {
   return
 }
 
+// TODO: do something about repeat use of getToken?
 const getToken = (): string | null => {
   const localStorageToken = window.localStorage.getItem(
     LOCAL_STORAGE_KEYS.TOKEN
@@ -76,8 +77,8 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       enabled: false,
       onSuccess: (res) => {
         if (res.verifyToken) {
-          // TODO: set token to header here?
           const token = getToken()
+          // TODO: set token to header here?
           if (token) {
             window.localStorage.setItem(LOCAL_STORAGE_KEYS.TOKEN, token)
             setUser(getUser(token))
@@ -96,6 +97,9 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         // TODO: how to do this immediately?
         window.history.replaceState({}, document.title, "/")
       },
+    },
+    requestHeaders: {
+      authorization: `Bearer ${getToken()}`,
     },
   })
 
