@@ -1,4 +1,4 @@
-import React from "react"
+import type React from "react"
 
 import { QueryProvider } from "@/context/QueryProvider"
 import { ThemeWrapper } from "@/context/ThemeProvider"

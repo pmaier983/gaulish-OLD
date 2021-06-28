@@ -6,7 +6,7 @@
     "allowJs": false,
     "isolatedModules": true,
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "baseUrl": "./",
     /* paths - import rewriting/resolving */
     "paths": {

@@ -1,4 +1,8 @@
 {
-  "presets": ["@babel/preset-react", "@babel/preset-typescript"],
-  "plugins": [["babel-plugin-styled-components", { "pure": true, "ssr": false }]]
+  "presets": [
+    "@babel/preset-typescript", 
+    ["@babel/preset-react", { "runtime": "automatic" }], 
+    ["@babel/preset-env", { "targets": { "esmodules": true }, "bugfixes": true, "modules": false }]
+  ],
+  "plugins": [["babel-plugin-styled-components", { "pure": true, "ssr": false }]],
 }

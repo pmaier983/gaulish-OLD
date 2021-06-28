@@ -18,7 +18,7 @@ export const UserContext = createContext({
   isLoggedIn: false,
   isLoading: false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setUser: (user: User) => {
+  setUser: (_user: User) => {
     console.error("Place a Provider In A Parent Node to get a Theme")
   },
   logoutUser: () => {
