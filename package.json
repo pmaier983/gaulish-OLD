@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build:doc": "docker build -t gaulish .",
-    "dev:doc": "docker run --rm --name gaulish -p 3000:3000 -v $INIT_CWD:/usr/src gaulish",
+    "dev:docker": "docker run --rm --name gaulish -p 3000:3000 -v $INIT_CWD:/usr/src gaulish",
     "dev": "snowpack dev",
     "build": "snowpack build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
