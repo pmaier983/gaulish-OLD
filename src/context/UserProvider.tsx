@@ -30,6 +30,7 @@ export const useUserContext = (): UserContextState => useContext(UserContext)
 
 // TODO: clean this up into separate functions
 const getUser = (token?: string) => {
+  // if passed a token parse the token
   if (token) {
     const [, tokenData] = token.split(".")
     if (tokenData) {
@@ -37,7 +38,7 @@ const getUser = (token?: string) => {
     }
   }
   const possibleToken = window.localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN)
-  if (!possibleToken) return // TODO should i return null or undefined?
+  if (!possibleToken) return
   const [, tokenData] = possibleToken.split(".")
   if (tokenData) {
     return JSON.parse(atob(tokenData))
