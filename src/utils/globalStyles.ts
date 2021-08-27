@@ -82,7 +82,7 @@ export const GlobalStyle = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
-    line-height: 2;
+    line-height: 2; // TODO: find a way to better center font?
     font-family: 'dyslexic';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: auto;
