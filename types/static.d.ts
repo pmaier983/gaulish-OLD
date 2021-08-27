@@ -28,3 +28,7 @@ declare module "*.png" {
 }
 
 /* CUSTOM: ADD YOUR OWN HERE */
+declare module "*.ttf" {
+  const ref: string
+  export default ref
+}
