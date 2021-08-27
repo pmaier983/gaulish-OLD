@@ -82,8 +82,8 @@ export const GlobalStyle = createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
-    line-height: 1.5;
-    font-family: 'Raleway', sans-serif;
+    line-height: 2;
+    font-family: 'dyslexic';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: auto;
   }

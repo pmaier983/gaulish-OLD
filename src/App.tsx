@@ -15,6 +15,7 @@ const StyledWrapper = styled.div`
 // TODO remove lodash from the app
 const App = () => {
   const { isLoggedIn, user, logoutUser } = useUserContext()
+
   if (!isLoggedIn) {
     return <LoginPage />
   }

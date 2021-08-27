@@ -4,5 +4,5 @@
     ["@babel/preset-react", { "runtime": "automatic" }], 
     ["@babel/preset-env", { "targets": { "esmodules": true }, "bugfixes": true, "modules": false }]
   ],
-  "plugins": [["babel-plugin-styled-components", { "pure": true, "ssr": false }]],
+  "plugins": [["babel-plugin-styled-components", { "pure": true, "ssr": false }]]
 }
