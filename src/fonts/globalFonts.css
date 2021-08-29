@@ -1,9 +1,0 @@
-@font-face {
-  font-family: "dyslexic";
-  src: local("dyslexic"), url(./OpenDyslexic3-Regular.ttf) format("truetype");
-}
-
-@font-face {
-  font-family: "dyslexicBold";
-  src: local("dyslexicBold"), url(./OpenDyslexic3-Bold.ttf) format("truetype");
-}
