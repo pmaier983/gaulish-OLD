@@ -21,7 +21,7 @@ const StyledButtonWrapper = styled.div`
 `
 
 const StyledButton = styled.button`
-  padding: 12px 20px 20px 20px; // visually center
+  padding: 10px;
 `
 
 export const LoginPage = () => (

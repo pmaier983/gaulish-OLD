@@ -83,7 +83,7 @@ export const GlobalStyle = createGlobalStyle`
   *:after {
     box-sizing: border-box;
     line-height: 2; // TODO: find a way to better center font?
-    font-family: 'dyslexic';
+    font-family: 'Red Hat Text', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: auto;
   }
