@@ -33,7 +33,7 @@ module.exports = {
     "@": "./src",
   },
   packageOptions: {
-    /* ... */
+    knownEntrypoints: ["react/jsx-runtime"],
   },
   devOptions: {
     port: 3000,
