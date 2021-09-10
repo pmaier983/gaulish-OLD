@@ -17,7 +17,6 @@ export const useSubscription = ({ query }: { query: string }) => {
   const [data, setData] = useState<any>()
   const [isLoading, setLoadingState] = useState<boolean>(true)
 
-  // TODO: handle query invalidation?
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     new Promise((resolve, reject) => {
@@ -27,6 +26,7 @@ export const useSubscription = ({ query }: { query: string }) => {
         },
         {
           next: (newData) => {
+            // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
             setData(newData)
             if (isLoading) setLoadingState(true)
           },
