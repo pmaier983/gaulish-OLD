@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { AppWrapper } from "@/AppWrapper"
 import { LoginPage } from "@/pages/LoginPage"
 import { useUserContext } from "@/context/UserProvider"
+import { useSubscription } from "@/hooks/useSubscription"
+import { gql } from "graphql-request"
 
 const StyledWrapper = styled.div`
   height: 100%;
@@ -16,6 +18,23 @@ const StyledWrapper = styled.div`
 const App = () => {
   const { isLoggedIn, user, logoutUser } = useUserContext()
 
+  const data = useSubscription({
+    query: gql`
+      subscription {
+        globalChat {
+          text
+          username
+        }
+      }
+    `,
+  })
+
+  return (
+    <div>
+      Hello
+      {JSON.stringify(data)}
+    </div>
+  )
   if (!isLoggedIn) {
     return <LoginPage />
   }
