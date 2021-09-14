@@ -3,32 +3,39 @@ import { useEffect } from "react"
 import { createClient } from "graphql-ws"
 
 // TODO: how to implement this into things?
-// import type { Query } from "@/generated/graphql"
+import type { Subscription } from "@/generated/graphql"
 
 const client = createClient({
   url: `ws://localhost:8080/graphql`,
 })
 
+type PureSubscription = Omit<Subscription, "__typename">
+type SubscriptionKeys = keyof PureSubscription
+type SubscriptionTypes = PureSubscription[SubscriptionKeys]
+
 // input {query}
 // return {isLoading, data}
 // TODO: create a top level Websocket that never closes?
-export const useSubscription = ({ query }: { query: string }) => {
+export const useSubscription = ({
+  query,
+}: {
+  query: string
+}): { data?: SubscriptionTypes } => {
   // TODO: properly type
-  const [data, setData] = useState<any>()
-  const [isLoading, setLoadingState] = useState<boolean>(true)
+  const [data, setData] = useState<SubscriptionTypes>()
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     new Promise((resolve, reject) => {
-      client.subscribe(
+      client.subscribe<SubscriptionTypes>(
         {
           query,
         },
         {
           next: (newData) => {
+            // TODO: is there a better way of doing this?
+            setData(newData as SubscriptionTypes)
             // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
-            setData(newData)
-            if (isLoading) setLoadingState(true)
           },
           error: reject,
           // how to cleanup on complete?
@@ -41,7 +48,7 @@ export const useSubscription = ({ query }: { query: string }) => {
     //TODO: how to close socket?
   })
 
-  return { data, isLoading }
+  return { data }
 }
 
 // export const useSubscriptionQuery = () => {}
