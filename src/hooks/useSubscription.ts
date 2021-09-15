@@ -4,6 +4,7 @@ import { createClient } from "graphql-ws"
 
 // TODO: how to implement this into things?
 import type { Subscription } from "@/generated/graphql"
+import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
 
 const client = createClient({
   url: `ws://localhost:8080/graphql`,
@@ -25,26 +26,30 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
   const [data, setData] = useState<SubscriptionTypes>()
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    new Promise((resolve, reject) => {
-      client.subscribe<SubscriptionTypes>(
-        {
-          query,
-        },
-        {
-          next: (newData) => {
-            // TODO: is there a better way of doing this?
-            setData(newData as SubscriptionTypes)
-            // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
+    if (window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)) {
+      // this empty subscription will open the websocket connection and keep it open
+      // until the connection is closed
+      new Promise((resolve, reject) => {
+        client.subscribe<SubscriptionTypes>(
+          {
+            query,
           },
-          error: reject,
-          // how to cleanup on complete?
-          complete: () => {
-            resolve(data)
-          },
-        }
-      )
-    })
+          {
+            next: (newData) => {
+              // TODO: is there a better way of doing this?
+              setData(newData as SubscriptionTypes)
+              // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
+            },
+            error: reject,
+            // how to cleanup on complete?
+            complete: () => {
+              resolve(data)
+            },
+          }
+        )
+      })
+    }
+
     //TODO: how to close socket?
   })
 
