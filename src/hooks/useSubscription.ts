@@ -16,11 +16,11 @@ type SubscriptionTypes = PureSubscription[SubscriptionKeys]
 // input {query}
 // return {isLoading, data}
 // TODO: create a top level Websocket that never closes?
-export const useSubscription = ({
+export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
   query,
 }: {
   query: string
-}): { data?: SubscriptionTypes } => {
+}): { data?: PureSubscription[SubscriptionKey] } => {
   // TODO: properly type
   const [data, setData] = useState<SubscriptionTypes>()
 

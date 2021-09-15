@@ -9,7 +9,7 @@ const StyledWrapper = styled.div`
 `
 
 export const HomePage = () => {
-  const data = useSubscription({
+  const data = useSubscription<"globalChat">({
     query: gql`
       subscription {
         globalChat {
