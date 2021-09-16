@@ -1,13 +1,21 @@
 import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
 
+// TODO: simplify this (make it pretty, so ugly rn)
 export const toggleWebsocketsEnabled = (newWebsocketState?: boolean) => {
-  // only update the websocket state if you're changing to a new websocket state
+  console.log("whats happening?")
+  const currentWebsocketState = window.localStorage.getItem(
+    LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED
+  )
   if (newWebsocketState == null) {
-  }
-  if (
-    newWebsocketState !==
-    !!window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
-  ) {
+    if (currentWebsocketState) {
+      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
+    } else {
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED,
+        "TRUE"
+      )
+    }
+  } else if (newWebsocketState !== !!currentWebsocketState) {
     if (newWebsocketState) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED,
