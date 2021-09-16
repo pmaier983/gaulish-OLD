@@ -8,7 +8,6 @@ import { ChatBox } from "@/components/ChatBox"
 
 const StyledWrapper = styled.div`
   height: 100%;
-  background-color: ${({ theme }) => theme.color.gray[300]};
 `
 
 export const HomePage = () => {
