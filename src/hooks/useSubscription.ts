@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "graphql-ws"
 
 // TODO: how to implement this into things?
@@ -48,9 +47,17 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
           }
         )
       })
+      // TODO: implement a catch for if things go wrong
+      // alert modal?
     }
-
-    //TODO: how to close socket?
+    // cleanup websocket
+    return () => {
+      if (
+        !window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
+      ) {
+        client.dispose()
+      }
+    }
   })
 
   return { data }
