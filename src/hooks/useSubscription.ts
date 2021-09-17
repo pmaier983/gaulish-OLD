@@ -5,6 +5,7 @@ import { createClient } from "graphql-ws"
 import type { Subscription } from "@/generated/graphql"
 import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
 
+// graphql client
 const client = createClient({
   url: `ws://localhost:8080/graphql`,
 })
@@ -25,7 +26,11 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
   const [data, setData] = useState<SubscriptionTypes>()
 
   useEffect(() => {
-    if (window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)) {
+    // only open the websocket connection once!
+    if (
+      window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED) &&
+      !data
+    ) {
       // this empty subscription will open the websocket connection and keep it open
       // until the connection is closed
       new Promise((resolve, reject) => {
@@ -50,15 +55,15 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
       // TODO: implement a catch for if things go wrong
       // alert modal?
     }
-    // cleanup websocket
     return () => {
+      // only cleanup the websocket if we have disabled websockets!
       if (
         !window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
       ) {
         client.dispose()
       }
     }
-  })
+  }, [data, query])
 
   return { data }
 }
