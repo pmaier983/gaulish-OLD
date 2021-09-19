@@ -33,7 +33,12 @@ module.exports = {
     "@": "./src",
   },
   packageOptions: {
-    knownEntrypoints: ["react/jsx-runtime"],
+    // TODO: what is the negative effect of doing this?
+    knownEntrypoints: [
+      "react/jsx-runtime",
+      "react-is",
+      "@reach/utils/use-constant",
+    ],
   },
   devOptions: {
     port: 3000,

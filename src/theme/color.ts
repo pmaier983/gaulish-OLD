@@ -2,6 +2,7 @@ interface ColorObject {
   [key: string]: string | ColorObject
 }
 
+// TODO: fix theme autocomplete?
 // HSL: hue (degree), saturation (%), lightness (%)
 const base_colors: ColorObject = {
   primary: "0, 0, 0",
