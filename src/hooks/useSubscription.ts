@@ -1,71 +1,61 @@
 import { useState, useEffect } from "react"
-import { createClient } from "graphql-ws"
+import type { NextMessage } from "graphql-ws"
 
 // TODO: how to implement this into things?
 import type { Subscription } from "@/generated/graphql"
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
-
-// graphql client
-const client = createClient({
-  url: `ws://localhost:8080/graphql`,
-})
+import { websocketClient } from "@/client"
 
 type PureSubscription = Omit<Subscription, "__typename">
 type SubscriptionKeys = keyof PureSubscription
 type SubscriptionTypes = PureSubscription[SubscriptionKeys]
 
-// input {query}
-// return {isLoading, data}
 // TODO: create a top level Websocket that never closes?
 export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
   query,
 }: {
   query: string
-}): { data?: PureSubscription[SubscriptionKey] } => {
+}): { data?: PureSubscription[SubscriptionKey][] } => {
   // TODO: properly type
+  const [allData, setAllData] = useState<SubscriptionTypes[]>([])
   const [data, setData] = useState<SubscriptionTypes>()
 
   useEffect(() => {
-    // only open the websocket connection once!
-    if (
-      window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED) &&
-      !data
-    ) {
-      // this empty subscription will open the websocket connection and keep it open
-      // until the connection is closed
-      new Promise((resolve, reject) => {
-        client.subscribe<SubscriptionTypes>(
-          {
-            query,
+    // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
+    new Promise((resolve, reject) => {
+      websocketClient.subscribe<SubscriptionTypes>(
+        {
+          query,
+        },
+        {
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          next: () => {},
+          error: reject,
+          // how to cleanup on complete?
+          complete: () => {
+            resolve(undefined)
           },
-          {
-            next: (newData) => {
-              // TODO: is there a better way of doing this?
-              setData(newData as SubscriptionTypes)
-              // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
-            },
-            error: reject,
-            // how to cleanup on complete?
-            complete: () => {
-              resolve(data)
-            },
-          }
-        )
-      })
-      // TODO: implement a catch for if things go wrong
-      // alert modal?
-    }
+        }
+      )
+    })
+
+    // TODO: how to properly type this?
+    websocketClient.on("message", (response) => {
+      setData((response as NextMessage)?.payload?.data as SubscriptionTypes)
+    })
+
     return () => {
-      // only cleanup the websocket if we have disabled websockets!
-      if (
-        !window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
-      ) {
-        client.dispose()
-      }
+      console.log("CLOSE WEBSOCKET")
+      websocketClient.dispose()
     }
-  }, [data, query])
+  }, [query])
 
-  return { data }
+  useEffect(() => {
+    if (data) {
+      setAllData([...allData, data])
+    }
+    /* We only want to update allData when a new data message comes in*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+
+  return { data: allData }
 }
-
-// export const useSubscriptionQuery = () => {}
