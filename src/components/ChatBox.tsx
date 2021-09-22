@@ -1,9 +1,10 @@
+import { gql } from "graphql-request"
+import styled from "styled-components"
+
 import { useUserContext } from "@/context/UserProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { useSubscription } from "@/hooks/useSubscription"
-import { gql } from "graphql-request"
 import { useForm } from "react-hook-form"
-import styled from "styled-components"
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -21,7 +22,19 @@ interface ChatForm {
 export const ChatBox = () => {
   const { user } = useUserContext()
   const { register, watch } = useForm<ChatForm>()
+
   const globalChatText = watch("submitGlobalChat")
+
+  const { data } = useSubscription({
+    query: gql`
+      subscription {
+        globalChat {
+          text
+          username
+        }
+      }
+    `,
+  })
 
   const { refetch } = useQuery({
     key: "chatGlobally",
@@ -31,21 +44,10 @@ export const ChatBox = () => {
       }
     `,
     variables: {
+      // TODO: properly type both of these
       text: globalChatText,
-      // TODO: properly type user
       username: user?.username as string,
     },
-  })
-
-  const data = useSubscription<"globalChat">({
-    query: gql`
-      subscription {
-        globalChat {
-          text
-          username
-        }
-      }
-    `,
   })
 
   return (
