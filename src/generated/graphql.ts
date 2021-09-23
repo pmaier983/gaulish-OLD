@@ -21,7 +21,7 @@ export type Chat = Node & {
   __typename?: "Chat"
   id: Scalars["ID"]
   text: Scalars["String"]
-  time: Scalars["Int"]
+  time: Scalars["String"]
   username?: Maybe<Scalars["String"]>
 }
 
