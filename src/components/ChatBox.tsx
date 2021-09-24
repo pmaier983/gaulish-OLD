@@ -7,7 +7,7 @@ import type { Chat } from "@/generated/graphql"
 import { useUserContext } from "@/context/UserProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { useSubscription } from "@/hooks/useSubscription"
-import type { Chat } from "@/generated/graphql"
+import { MAX_CHARACTERS_IN_CHAT } from "@/utils/constants"
 
 const StyledContainer = styled.div`
   display: flex;
@@ -19,9 +19,21 @@ const StyledContainer = styled.div`
   background-color: lightgray;
 `
 
-const StyledChatContent = styled.div``
+const StyledChatInputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+`
 
-const StyledChatInputContainer = styled.div``
+// TODO: make this
+const StyledCharacterCounter = styled.span`
+  width: 100px;
+  text-align: center;
+`
+
+const StyledChatInput = styled.input`
+  width: 100%;
+`
 
 interface ChatForm {
   submitGlobalChat: string
@@ -76,7 +88,7 @@ export const ChatBox = () => {
 
   const globalChatText = watch("submitGlobalChat")
 
-  useSubscription<"globalChat">({
+  const { data: nope } = useSubscription<"globalChat">({
     query: gql`
       subscription {
         globalChat {
@@ -98,52 +110,81 @@ export const ChatBox = () => {
     `,
     variables: {
       // TODO: properly type both of these
-      text: globalChatText,
+      text: globalChatText?.slice(0, MAX_CHARACTERS_IN_CHAT),
       username: user?.username as string,
     },
   })
 
   return (
     <StyledContainer>
-      <ChatContent messages={data.map((message) => message.globalChat)} />
+      <ChatContent
+        messages={[...data, ...(nope as any)].map(
+          (message) => message.globalChat
+        )}
+      />
       <StyledChatInputContainer>
-        <input
+        <StyledChatInput
           {...register("submitGlobalChat")}
           placeholder="chat globally"
+          autoComplete="off"
           onKeyDown={async (e) => {
             if (e.key === "Enter" && !!globalChatText) {
               refetch()
             }
           }}
         />
+
+        <StyledCharacterCounter
+          css={
+            globalChatText?.length > MAX_CHARACTERS_IN_CHAT
+              ? css`
+                  color: ${({ theme }) => theme.color.alert};
+                  font-weight: bold;
+                `
+              : css``
+          }
+        >
+          {globalChatText?.length} / {MAX_CHARACTERS_IN_CHAT}
+        </StyledCharacterCounter>
       </StyledChatInputContainer>
     </StyledContainer>
   )
 }
 
+const StyledChatContent = styled.div`
+  overflow-y: scroll;
+  overflow-x: hidden;
+`
+
 const ChatContent = ({ messages }: { messages: Chat[] }) => {
-  const { user } = useUserContext()
+  // const { user } = useUserContext()
+  const lastChatMessageRef = useRef<HTMLParagraphElement>(null)
+  const chatContentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const innerChatContentRef = chatContentRef.current
+    const innerLastChatMessageRef = lastChatMessageRef?.current
+
+    // only scroll to bottom if the user is already at the bottom
+    if (
+      innerChatContentRef &&
+      innerLastChatMessageRef &&
+      innerChatContentRef.scrollHeight -
+        innerChatContentRef.clientHeight -
+        innerLastChatMessageRef.clientHeight ===
+        innerChatContentRef.scrollTop
+    ) {
+      lastChatMessageRef.current?.scrollIntoView()
+    }
+  }, [messages.length])
+
   return (
-    <StyledChatContent>
-      {messages.map(({ username, text, id }) => {
-        if (user?.username === username) {
-          return (
-            <p
-              key={id}
-              css={css`
-                text-align: end;
-              `}
-            >
-              {text}
-            </p>
-          )
-        }
-        return (
-          <p key={id}>
-            {username}: {text}
-          </p>
-        )
-      })}
+    <StyledChatContent ref={chatContentRef}>
+      {messages.map(({ username, text, id }, i) => (
+        <p key={id} ref={i === messages.length - 1 ? lastChatMessageRef : null}>
+          {username}: {text}
+        </p>
+      ))}
     </StyledChatContent>
   )
 }
