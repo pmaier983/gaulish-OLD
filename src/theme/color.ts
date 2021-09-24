@@ -6,6 +6,7 @@ interface ColorObject {
 // HSL: hue (degree), saturation (%), lightness (%)
 const base_colors: ColorObject = {
   primary: "0, 0, 0",
+  alert: "3, 100, 46",
 }
 
 const stringToHSL = (colorString: string) => {
