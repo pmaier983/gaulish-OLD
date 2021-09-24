@@ -1,7 +1,9 @@
+import { useEffect, useRef } from "react"
 import { gql } from "graphql-request"
 import styled, { css } from "styled-components"
 import { useForm } from "react-hook-form"
 
+import type { Chat } from "@/generated/graphql"
 import { useUserContext } from "@/context/UserProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { useSubscription } from "@/hooks/useSubscription"
@@ -11,8 +13,9 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 500px;
+  width: 600px;
   height: 150px;
+  font-size: 12px;
   background-color: lightgray;
 `
 
@@ -61,7 +64,7 @@ const data: { globalChat: Chat }[] = [
     globalChat: {
       id: "coding a react app lol.player11632367844210",
       time: "1632367844210",
-      text: "coding a react app lol.",
+      text: "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM",
       username: "player1",
     },
   },
