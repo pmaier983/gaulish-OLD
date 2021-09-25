@@ -44,7 +44,6 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
     })
 
     return () => {
-      console.log("CLOSE WEBSOCKET")
       websocketClient.dispose()
     }
   }, [query])

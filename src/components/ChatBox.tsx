@@ -58,6 +58,7 @@ export const ChatBox = () => {
     `,
   })
 
+  // TODO: rate limit!
   const { refetch } = useQuery({
     key: "chatGlobally",
     query: gql`
@@ -90,7 +91,6 @@ export const ChatBox = () => {
             }
           }}
         />
-
         <StyledCharacterCounter
           css={
             globalChatText?.length > MAX_CHARACTERS_IN_CHAT
