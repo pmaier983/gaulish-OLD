@@ -100,7 +100,7 @@ export const ChatBox = () => {
               : css``
           }
         >
-          {globalChatText?.length} / {MAX_CHARACTERS_IN_CHAT}
+          {globalChatText?.length | 0} / {MAX_CHARACTERS_IN_CHAT}
         </StyledCharacterCounter>
       </StyledChatInputContainer>
     </StyledContainer>
