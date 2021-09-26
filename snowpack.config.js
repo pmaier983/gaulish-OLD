@@ -33,6 +33,7 @@ module.exports = {
     "@": "./src",
   },
   packageOptions: {
+    // TODO: what is the negative effect of doing this?
     knownEntrypoints: ["react/jsx-runtime"],
   },
   devOptions: {

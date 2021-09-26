@@ -8,7 +8,6 @@
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended"
@@ -32,9 +31,6 @@
       "version": "detect"
     }
   },
-  // OFF = 0
-  // WARN = 1
-  // ERROR = 2
   "rules": {
     "react/react-in-jsx-scope": 0,
     "react/jsx-curly-newline": 0,

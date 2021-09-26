@@ -1,47 +1,58 @@
-import { useState } from "react"
-import { useEffect } from "react"
-import { createClient } from "graphql-ws"
+import { useState, useEffect } from "react"
 
 // TODO: how to implement this into things?
-// import type { Query } from "@/generated/graphql"
+import type { Subscription } from "@/generated/graphql"
+import { websocketClient } from "@/client"
 
-const client = createClient({
-  url: `ws://localhost:8080/graphql`,
-})
+type Subscriptions = Omit<Subscription, "__typename">
+type SubscriptionKeys = keyof Subscriptions
 
-// input {query}
-// return {isLoading, data}
 // TODO: create a top level Websocket that never closes?
-export const useSubscription = ({ query }: { query: string }) => {
+export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
+  query,
+}: {
+  query: string
+}): { data: Pick<Subscriptions, SubscriptionKey>[] } => {
   // TODO: properly type
-  const [data, setData] = useState<any>()
-  const [isLoading, setLoadingState] = useState<boolean>(true)
+  const [allData, setAllData] = useState<Subscriptions[]>([])
+  const [data, setData] = useState<Subscriptions>()
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
     new Promise((resolve, reject) => {
-      client.subscribe(
+      websocketClient.subscribe<Subscriptions>(
         {
           query,
         },
         {
-          next: (newData) => {
-            // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
-            setData(newData)
-            if (isLoading) setLoadingState(true)
-          },
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          next: () => {},
           error: reject,
           // how to cleanup on complete?
           complete: () => {
-            resolve(data)
+            resolve(undefined)
           },
         }
       )
     })
-    //TODO: how to close socket?
-  })
 
-  return { data, isLoading }
+    // TODO: how to properly type this?
+    websocketClient.on("message", (response) => {
+      setData((response as any)?.payload.data)
+    })
+
+    return () => {
+      websocketClient.dispose()
+    }
+  }, [query])
+
+  useEffect(() => {
+    if (data) {
+      setAllData([...allData, data])
+    }
+    /* We only want to update allData when a new data message comes in*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+
+  return { data: allData }
 }
-
-// export const useSubscriptionQuery = () => {}
