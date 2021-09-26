@@ -1,28 +1,26 @@
 import { useState, useEffect } from "react"
-import type { NextMessage } from "graphql-ws"
 
 // TODO: how to implement this into things?
 import type { Subscription } from "@/generated/graphql"
 import { websocketClient } from "@/client"
 
-type PureSubscription = Omit<Subscription, "__typename">
-type SubscriptionKeys = keyof PureSubscription
-type SubscriptionTypes = PureSubscription[SubscriptionKeys]
+type Subscriptions = Omit<Subscription, "__typename">
+type SubscriptionKeys = keyof Subscriptions
 
 // TODO: create a top level Websocket that never closes?
 export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
   query,
 }: {
   query: string
-}): { data?: PureSubscription[SubscriptionKey][] } => {
+}): { data: Pick<Subscriptions, SubscriptionKey>[] } => {
   // TODO: properly type
-  const [allData, setAllData] = useState<SubscriptionTypes[]>([])
-  const [data, setData] = useState<SubscriptionTypes>()
+  const [allData, setAllData] = useState<Subscriptions[]>([])
+  const [data, setData] = useState<Subscriptions>()
 
   useEffect(() => {
     // TODO implement query invalidation: https://github.com/tannerlinsley/react-query/issues/171
     new Promise((resolve, reject) => {
-      websocketClient.subscribe<SubscriptionTypes>(
+      websocketClient.subscribe<Subscriptions>(
         {
           query,
         },
@@ -40,7 +38,7 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
 
     // TODO: how to properly type this?
     websocketClient.on("message", (response) => {
-      setData((response as NextMessage)?.payload?.data as SubscriptionTypes)
+      setData((response as any)?.payload.data)
     })
 
     return () => {

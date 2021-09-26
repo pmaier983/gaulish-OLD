@@ -74,7 +74,7 @@ export type QueryGetUserByUsernameArgs = {
 
 export type Subscription = {
   __typename?: "Subscription"
-  globalChat?: Maybe<Chat>
+  globalChat: Chat
 }
 
 export type Tile = Node & {

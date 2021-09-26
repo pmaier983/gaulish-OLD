@@ -76,9 +76,8 @@ export const ChatBox = () => {
   return (
     <StyledContainer>
       <ChatContent
-        messages={[...data, ...(nope as any)].map(
-          (message) => message.globalChat
-        )}
+        // TODO: properly type this
+        messages={data.map((message) => message.globalChat)}
       />
       <StyledChatInputContainer>
         <StyledChatInput
