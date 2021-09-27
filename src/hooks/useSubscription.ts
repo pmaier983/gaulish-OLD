@@ -38,7 +38,7 @@ export const useSubscription = <SubscriptionKey extends SubscriptionKeys>({
 
     // TODO: how to properly type this?
     websocketClient.on("message", (response) => {
-      setData((response as any)?.payload.data)
+      setData((response as any)?.payload?.data)
     })
 
     return () => {
