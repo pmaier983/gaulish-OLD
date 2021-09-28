@@ -6,8 +6,11 @@ import { toggleWebsocketsEnabled } from "@/utils/helperFunctions"
 import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
 import { ChatBox } from "@/components/ChatBox"
 import { useUserContext } from "@/context/UserProvider"
+import { Grid } from "@/components/Grid"
 
 const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
   height: 100%;
 `
 
@@ -29,6 +32,7 @@ export const HomePage = () => {
       />
       {checked && <ChatBox />}
       <button onClick={logoutUser}>Logout</button>
+      <Grid />
     </StyledWrapper>
   )
 }
