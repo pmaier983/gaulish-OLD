@@ -9,9 +9,10 @@ import { useUserContext } from "@/context/UserProvider"
 import { Grid } from "@/components/Grid"
 
 const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
   height: 100%;
+  grid-template-columns: minmax(100px, 1fr) minmax(10px, 2fr) minmax(100px, 1fr);
+  grid-template-rows: minmax(100px, 1fr) minmax(10px, 2fr) minmax(10px, 1fr);
 `
 
 export const HomePage = () => {
@@ -22,7 +23,7 @@ export const HomePage = () => {
 
   return (
     <StyledWrapper>
-      Enable Chat
+      {/* Enable Chat
       <MixedCheckbox
         checked={checked}
         onChange={({ target: { checked } }) => {
@@ -31,8 +32,18 @@ export const HomePage = () => {
         }}
       />
       {checked && <ChatBox />}
-      <button onClick={logoutUser}>Logout</button>
-      <Grid />
+      <button onClick={logoutUser}>Logout</button> */}
+      {/* <Grid /> */}
+
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+      <div>7</div>
+      <div>8</div>
+      <div>9</div>
     </StyledWrapper>
   )
 }
