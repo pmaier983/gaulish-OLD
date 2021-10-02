@@ -6,8 +6,6 @@ import { HomePage } from "@/pages/HomePage"
 import { useUserContext } from "@/context/UserProvider"
 
 // TODO: setup 404 page
-// handle Shared server <-> client types
-// TODO remove lodash from the app
 // TODO: bump to husky 7.X
 const App = () => {
   const { isLoggedIn } = useUserContext()
