@@ -2,6 +2,8 @@ import React, { createContext, useContext, useReducer } from "react"
 
 import {
   CELL_SIZE_INCREMENT,
+  DEFAULT_CELL_SIZE,
+  LOCAL_STORAGE_KEYS,
   MAX_CELL_SIZE,
   MIN_CELL_SIZE,
 } from "@/utils/constants"
@@ -23,7 +25,14 @@ interface Action {
 }
 
 const initialState: GridProviderState = {
-  cellSize: 70,
+  // TODO: is this IIFE bad?
+  cellSize: (() => {
+    const storedCellSize = window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.CELL_SIZE
+    )
+    if (storedCellSize) return parseInt(storedCellSize, 10)
+    return DEFAULT_CELL_SIZE
+  })(),
   GRID_ACTIONS,
 }
 
@@ -43,16 +52,34 @@ export const useGridContext = () => useContext(GridContext)
 
 const reducer = (state: GridProviderState, action: Action) => {
   switch (action.type) {
-    case GRID_ACTIONS.INCREASE_CELL_SIZE:
+    case GRID_ACTIONS.INCREASE_CELL_SIZE: {
+      const newCellSize = Math.min(
+        MAX_CELL_SIZE,
+        state.cellSize + CELL_SIZE_INCREMENT
+      )
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.CELL_SIZE,
+        newCellSize.toString()
+      )
       return {
         ...state,
-        cellSize: Math.min(MAX_CELL_SIZE, state.cellSize + CELL_SIZE_INCREMENT),
+        cellSize: newCellSize,
       }
-    case GRID_ACTIONS.DECREASE_CELL_SIZE:
+    }
+    case GRID_ACTIONS.DECREASE_CELL_SIZE: {
+      const newCellSize = Math.max(
+        MIN_CELL_SIZE,
+        state.cellSize - CELL_SIZE_INCREMENT
+      )
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.CELL_SIZE,
+        newCellSize.toString()
+      )
       return {
         ...state,
-        cellSize: Math.max(MIN_CELL_SIZE, state.cellSize - CELL_SIZE_INCREMENT),
+        cellSize: newCellSize,
       }
+    }
     default:
       console.error("The Reducer Doesn't handle this type")
       return state
