@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
+import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 
 // TODO: simplify this (make it pretty, so ugly rn)
 export const toggleWebsocketsEnabled = (newWebsocketState?: boolean) => {

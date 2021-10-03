@@ -2,7 +2,7 @@ import { MixedCheckbox } from "@reach/checkbox"
 import { useState } from "react"
 import styled from "styled-components"
 
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
+import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 import { toggleWebsocketsEnabled } from "@/utils/helperFunctions"
 import { ChatBox } from "@/components"
 

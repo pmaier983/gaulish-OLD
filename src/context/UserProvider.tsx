@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { gql } from "graphql-request"
 
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
+import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 import { useQuery } from "@/hooks/useQuery"
 import { client } from "@/client"
 import type { User } from "@/generated/graphql"

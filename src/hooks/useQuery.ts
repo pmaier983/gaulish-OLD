@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions, QueryObserverResult } from "react-query"
 
 import { client } from "@/client"
-import type { GRAPHQL_QUERY_KEYS } from "@/utils/enums"
+import type { GRAPHQL_QUERY_KEYS } from "@/utils/constants"
 import type { Query } from "@/generated/graphql"
 
 // TODO: is there some built in variables type for gql somewhere?
