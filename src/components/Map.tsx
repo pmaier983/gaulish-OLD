@@ -5,18 +5,18 @@ import {
 import AutoSizer from "react-virtualized-auto-sizer"
 import styled from "styled-components"
 
-import { useGridContext } from "@/context/GridProvider"
+import { useMapContext } from "@/context/MapProvider"
 
 const StyledWrapper = styled.div`
-  grid-area: grid;
+  grid-area: map;
 `
 
 export const Cell = ({ style }: GridChildComponentProps) => {
   return <div style={style}>I am cell</div>
 }
 
-export const Grid = () => {
-  const { cellSize } = useGridContext()
+export const Map = () => {
+  const { cellSize } = useMapContext()
   return (
     <StyledWrapper>
       <AutoSizer>

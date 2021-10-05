@@ -8,14 +8,14 @@ import {
   MIN_CELL_SIZE,
 } from "@/utils/constants"
 
-export const GRID_ACTIONS = {
+export const MAP_ACTIONS = {
   INCREASE_CELL_SIZE: "INCREASE_CELL_SIZE",
   DECREASE_CELL_SIZE: "DECREASE_CELL_SIZE",
 }
 
-interface GridProviderState {
+interface MapProviderState {
   cellSize: number
-  GRID_ACTIONS: typeof GRID_ACTIONS
+  MAP_ACTIONS: typeof MAP_ACTIONS
 }
 
 interface Action {
@@ -24,7 +24,7 @@ interface Action {
   payload?: any
 }
 
-const initialState: GridProviderState = {
+const initialState: MapProviderState = {
   // TODO: is this IIFE bad?
   cellSize: (() => {
     const storedCellSize = window.localStorage.getItem(
@@ -33,26 +33,26 @@ const initialState: GridProviderState = {
     if (storedCellSize) return parseInt(storedCellSize, 10)
     return DEFAULT_CELL_SIZE
   })(),
-  GRID_ACTIONS,
+  MAP_ACTIONS,
 }
 
-interface ContextProps extends GridProviderState {
-  dispatchGridAction: React.Dispatch<Action>
+interface ContextProps extends MapProviderState {
+  dispatchMapAction: React.Dispatch<Action>
 }
 
-export const GridContext = createContext<ContextProps>({
+export const MapContext = createContext<ContextProps>({
   ...initialState,
-  dispatchGridAction: () =>
+  dispatchMapAction: () =>
     console.error(
       "Place a Provider In A Parent Node to get Landing Page Context"
     ),
 })
 
-export const useGridContext = () => useContext(GridContext)
+export const useMapContext = () => useContext(MapContext)
 
-const reducer = (state: GridProviderState, action: Action) => {
+const reducer = (state: MapProviderState, action: Action) => {
   switch (action.type) {
-    case GRID_ACTIONS.INCREASE_CELL_SIZE: {
+    case MAP_ACTIONS.INCREASE_CELL_SIZE: {
       const newCellSize = Math.min(
         MAX_CELL_SIZE,
         state.cellSize + CELL_SIZE_INCREMENT
@@ -66,7 +66,7 @@ const reducer = (state: GridProviderState, action: Action) => {
         cellSize: newCellSize,
       }
     }
-    case GRID_ACTIONS.DECREASE_CELL_SIZE: {
+    case MAP_ACTIONS.DECREASE_CELL_SIZE: {
       const newCellSize = Math.max(
         MIN_CELL_SIZE,
         state.cellSize - CELL_SIZE_INCREMENT
@@ -87,14 +87,12 @@ const reducer = (state: GridProviderState, action: Action) => {
 }
 
 // TODO: properly type this.
-export const GridProvider: React.FC = ({ children }) => {
+export const MapProvider: React.FC = ({ children }) => {
   // TODO: test, does passing the value as an object vs. an array effect re-renders?
-  const [state, dispatchGridAction] = useReducer(reducer, initialState)
+  const [state, dispatchMapAction] = useReducer(reducer, initialState)
   return (
-    <GridContext.Provider
-      value={{ ...state, dispatchGridAction, GRID_ACTIONS }}
-    >
+    <MapContext.Provider value={{ ...state, dispatchMapAction, MAP_ACTIONS }}>
       {children}
-    </GridContext.Provider>
+    </MapContext.Provider>
   )
 }

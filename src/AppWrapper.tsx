@@ -4,7 +4,7 @@ import { QueryProvider } from "@/context/QueryProvider"
 import { ThemeWrapper } from "@/context/ThemeProvider"
 import { UserProvider } from "@/context/UserProvider"
 import { GlobalStyle } from "@/utils/globalStyles"
-import { GridProvider } from "./context/GridProvider"
+import { MapProvider } from "./context/MapProvider"
 
 // TODO: setup internationalization
 // TODO: is there a better way to type this (if you need children?)
@@ -18,10 +18,10 @@ const AppWrapper: React.FC = ({ children }) => {
     <QueryProvider>
       <UserProvider>
         <ThemeWrapper>
-          <GridProvider>
+          <MapProvider>
             <GlobalStyle />
             {children}
-          </GridProvider>
+          </MapProvider>
         </ThemeWrapper>
       </UserProvider>
     </QueryProvider>
