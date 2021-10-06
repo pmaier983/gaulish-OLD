@@ -1,3 +1,4 @@
+import type { Tile } from "@/generated/graphql"
 import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 
 // TODO: simplify this (make it pretty, so ugly rn)
@@ -24,4 +25,22 @@ export const toggleWebsocketsEnabled = (newWebsocketState?: boolean) => {
       window.localStorage.removeItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
     }
   }
+}
+
+export const getMapHeight = (map: Tile[]) => {
+  return map.reduce((acc, cur) => {
+    if (cur.x === 0) {
+      return acc + 1
+    }
+    return acc
+  }, 0)
+}
+
+export const getMapWidth = (map: Tile[]) => {
+  return map.reduce((acc, cur) => {
+    if (cur.y === 0) {
+      return acc + 1
+    }
+    return acc
+  }, 0)
 }
