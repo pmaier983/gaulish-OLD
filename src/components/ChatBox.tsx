@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form"
 
 import type { Chat } from "@/generated/graphql"
 import { useUserContext } from "@/context/UserProvider"
-import { useQuery } from "@/hooks/useQuery"
 import { useSubscription } from "@/hooks/useSubscription"
 import { MAX_CHARACTERS_IN_CHAT } from "@/utils/constants"
+import { useMutation } from "@/hooks/useMutation"
 
 const StyledContainer = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ interface ChatForm {
 
 export const ChatBox = () => {
   const { user } = useUserContext()
-  const { register, watch } = useForm<ChatForm>()
+  const { register, watch, setValue } = useForm<ChatForm>()
 
   const globalChatText = watch("submitGlobalChat")
 
@@ -59,7 +59,7 @@ export const ChatBox = () => {
   })
 
   // TODO: rate limit!
-  const { refetch } = useQuery({
+  const { refetch } = useMutation({
     key: "chatGlobally",
     query: gql`
       mutation ChatGlobally($text: String!, $username: String!) {
@@ -70,6 +70,11 @@ export const ChatBox = () => {
       // TODO: properly type both of these
       text: globalChatText?.slice(0, MAX_CHARACTERS_IN_CHAT),
       username: user?.username as string,
+    },
+    queryOptions: {
+      onSuccess: () => {
+        setValue("submitGlobalChat", "")
+      },
     },
   })
 
