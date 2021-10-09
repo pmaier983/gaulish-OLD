@@ -46,11 +46,11 @@ export type Point = {
 
 export type Query = {
   __typename?: "Query"
-  getAllTiles?: Maybe<Array<Maybe<Tile>>>
-  getTileByID?: Maybe<Tile>
-  getTilesAroundTile?: Maybe<Array<Maybe<Tile>>>
-  getTilesWithinRectangle?: Maybe<Array<Maybe<Tile>>>
-  getUserByUsername?: Maybe<User>
+  getAllTiles: Array<Tile>
+  getTileByID: Tile
+  getTilesAroundTile: Array<Tile>
+  getTilesWithinRectangle: Array<Tile>
+  getUserByUsername: User
   verifyToken: Scalars["Boolean"]
 }
 
@@ -80,9 +80,17 @@ export type Subscription = {
 export type Tile = Node & {
   __typename?: "Tile"
   id: Scalars["ID"]
-  tile_id?: Maybe<Scalars["Int"]>
-  x?: Maybe<Scalars["Int"]>
-  y?: Maybe<Scalars["Int"]>
+  tile_id: Scalars["Int"]
+  type: TileTypes
+  x: Scalars["Int"]
+  y: Scalars["Int"]
+}
+
+export enum TileTypes {
+  Forest = "forest",
+  Meadows = "meadows",
+  Mountains = "mountains",
+  Ocean = "ocean",
 }
 
 export type User = Node & {
