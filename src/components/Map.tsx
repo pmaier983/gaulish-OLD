@@ -1,23 +1,18 @@
-import {
-  FixedSizeGrid as VirtualizedGrid,
-  GridChildComponentProps,
-} from "react-window"
+import { useMemo } from "react"
+import { FixedSizeGrid as VirtualizedGrid } from "react-window"
 import AutoSizer from "react-virtualized-auto-sizer"
 import styled, { css } from "styled-components"
+import { gql } from "graphql-request"
 
 import { useMapContext } from "@/context/MapProvider"
 import { useQuery } from "@/hooks/useQuery"
-import { gql } from "graphql-request"
 import { getMapHeight, getMapWidth } from "@/utils/helperFunctions"
 import type { Tile } from "@/generated/graphql"
+import { Cell } from "@/components"
 
 const StyledWrapper = styled.div`
   grid-area: map;
 `
-
-export const Cell = ({ style }: GridChildComponentProps) => {
-  return <div style={style}>I am cell</div>
-}
 
 export const Map = () => {
   const { cellSize } = useMapContext()
@@ -41,8 +36,22 @@ export const Map = () => {
   // TODO: fix useQuery I mean really
   const map = data?.getAllTiles as Tile[]
 
+  const mapWidth = getMapWidth(map)
+  const mapHeight = getMapHeight(map)
+
+  const mapArray = useMemo(() => {
+    return map?.reduce(
+      (accMapArray, currentTile) => {
+        const { x, y } = currentTile
+        accMapArray[x][y] = currentTile
+        return accMapArray
+      },
+      Array.from(Array(mapWidth), () => Array(mapHeight))
+    )
+  }, [map, mapHeight, mapWidth])
+
   // TODO: handle no data state better?
-  if (isLoading || !data) {
+  if (isLoading) {
     // TODO: nicer Loading icon
     return (
       <StyledWrapper
@@ -64,12 +73,17 @@ export const Map = () => {
           <VirtualizedGrid
             height={height}
             width={width}
-            columnCount={getMapWidth(map)}
+            columnCount={mapWidth}
             columnWidth={cellSize}
-            rowCount={getMapHeight(map)}
+            rowCount={mapHeight}
             rowHeight={cellSize}
           >
-            {Cell}
+            {(props) => (
+              <Cell
+                {...props}
+                data={mapArray[props.columnIndex][props.rowIndex]}
+              />
+            )}
           </VirtualizedGrid>
         )}
       </AutoSizer>
