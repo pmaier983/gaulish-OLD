@@ -1,7 +1,6 @@
 import { useQuery, UseQueryOptions, QueryObserverResult } from "react-query"
 
 import { client } from "@/client"
-import type { GRAPHQL_QUERY_KEYS } from "@/utils/constants"
 import type { Query } from "@/generated/graphql"
 
 // TODO: is there some built in variables type for gql somewhere?
@@ -10,22 +9,11 @@ interface Variables {
 }
 
 interface UseCustomQuery<Result> {
-  key: GRAPHQL_QUERY_KEYS
+  key: keyof Omit<Query, "__typename">
   query: string
   variables?: Variables
   queryOptions?: UseQueryOptions<Result>
   requestHeaders?: HeadersInit
-}
-
-// TODO: how to type : [keyof Omit<Mutation, "__typename">]
-const MUTATION_KEYS = ["chatGlobally"]
-
-const baseMutationOptions = {
-  enabled: false,
-  staleTime: Infinity,
-  refetchOnMount: false,
-  refetchOnReconnect: false,
-  refetchOnWindowFocus: false,
 }
 
 const useCustomQuery = <Result = Query>({
@@ -38,9 +26,7 @@ const useCustomQuery = <Result = Query>({
   return useQuery<Result>(
     key,
     async () => await client.request(query, variables, requestHeaders),
-    !!MUTATION_KEYS.includes(key as string)
-      ? { ...baseMutationOptions, ...queryOptions }
-      : queryOptions
+    queryOptions
   )
 }
 
