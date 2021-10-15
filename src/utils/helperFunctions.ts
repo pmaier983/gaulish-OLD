@@ -27,8 +27,9 @@ export const toggleWebsocketsEnabled = (newWebsocketState?: boolean) => {
   }
 }
 
-export const getMapHeight = (map: Tile[]) => {
-  return map.reduce((acc, cur) => {
+export const getMapHeight = (map?: Tile[]) => {
+  if (!map) return 0
+  return map?.reduce((acc, cur) => {
     if (cur.x === 0) {
       return acc + 1
     }
@@ -36,8 +37,9 @@ export const getMapHeight = (map: Tile[]) => {
   }, 0)
 }
 
-export const getMapWidth = (map: Tile[]) => {
-  return map.reduce((acc, cur) => {
+export const getMapWidth = (map?: Tile[]) => {
+  if (!map) return 0
+  return map?.reduce((acc, cur) => {
     if (cur.y === 0) {
       return acc + 1
     }
