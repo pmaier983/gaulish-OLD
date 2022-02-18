@@ -1,5 +1,5 @@
-import { color } from "./color"
+import { colors as base_colors } from "./colors"
 
 export const theme = {
-  color,
+  color: base_colors,
 }

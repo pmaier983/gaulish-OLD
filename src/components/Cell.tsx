@@ -9,26 +9,26 @@ interface StyledWrapperProps {
 
 // TODO: is this the best way to do this?
 const StyledWrapper = styled.div<StyledWrapperProps>`
-  ${({ type }) => {
+  ${({ type, theme: { color } }) => {
     switch (type) {
       case TileTypes.Forest: {
         return css`
-          background: brown;
+          background: ${color.brown};
         `
       }
       case TileTypes.Meadows: {
         return css`
-          background: green;
+          background: ${color.green};
         `
       }
       case TileTypes.Mountains: {
         return css`
-          background: grey;
+          background: ${color.grey};
         `
       }
       case TileTypes.Ocean: {
         return css`
-          background: blue;
+          background: ${color.blue};
         `
       }
       default:
