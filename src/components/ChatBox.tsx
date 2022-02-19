@@ -99,7 +99,7 @@ export const ChatBox = () => {
           css={
             globalChatText?.length > MAX_CHARACTERS_IN_CHAT
               ? css`
-                  color: ${({ theme }) => theme.color.alert};
+                  color: ${({ theme }) => theme.colors.alert};
                   font-weight: bold;
                 `
               : css``

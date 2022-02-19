@@ -1,6 +1,6 @@
 // TODO: fix theme autocomplete?
 // HSL: hue (degree), saturation (%), lightness (%)
-const base_colors = {
+const colors = {
   primary: "hsl(0deg, 0%, 0%)",
   alert: "hsl(3deg, 100%, 46%)",
   brown: "hsl(18deg, 38%, 34%)",
@@ -10,4 +10,4 @@ const base_colors = {
   blue: "hsl(214deg, 35%, 37%)",
 }
 
-export { base_colors as colors }
+export { colors }

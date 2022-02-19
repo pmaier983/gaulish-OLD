@@ -1,5 +1,7 @@
-import { colors as base_colors } from "./colors"
+import { colors } from "./colors"
+import { styles } from "./styles"
 
 export const theme = {
-  color: base_colors,
+  colors,
+  styles,
 }
