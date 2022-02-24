@@ -7,6 +7,7 @@ import { client } from "@/client"
 import type { User } from "@/generated/graphql"
 
 interface UserContextState {
+  // TODO: how to fix this user null state?
   user?: User
   isLoggedIn: boolean
   setUser: (user: User) => void
