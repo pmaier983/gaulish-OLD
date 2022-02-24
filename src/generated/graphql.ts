@@ -25,6 +25,14 @@ export type Chat = Node & {
   username?: Maybe<Scalars["String"]>
 }
 
+export type City = Node & {
+  __typename?: "City"
+  city_id: Scalars["Int"]
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  tile: Tile
+}
+
 export type Mutation = {
   __typename?: "Mutation"
   chatGlobally?: Maybe<Scalars["Boolean"]>
@@ -46,12 +54,18 @@ export type Point = {
 
 export type Query = {
   __typename?: "Query"
+  getAllCities: Array<Maybe<City>>
   getAllTiles: Array<Tile>
+  getShipsByUUID: Array<Maybe<Ship>>
   getTileByID: Tile
   getTilesAroundTile: Array<Tile>
   getTilesWithinRectangle: Array<Tile>
   getUserByUsername: User
   verifyToken: Scalars["Boolean"]
+}
+
+export type QueryGetShipsByUuidArgs = {
+  uuid?: Maybe<Scalars["Int"]>
 }
 
 export type QueryGetTileByIdArgs = {
@@ -70,6 +84,16 @@ export type QueryGetTilesWithinRectangleArgs = {
 
 export type QueryGetUserByUsernameArgs = {
   username?: Maybe<Scalars["String"]>
+}
+
+export type Ship = Node & {
+  __typename?: "Ship"
+  city: City
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  ship_id: Scalars["Int"]
+  ship_type_id: Scalars["Int"]
+  uuid: Scalars["Int"]
 }
 
 export type Subscription = {
