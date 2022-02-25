@@ -112,6 +112,7 @@ export const ShipProvider: React.FC = ({ children }) => {
     return
   }
 
+  // TODO: is there a better way to do this?
   const { isLoading } = useQuery({
     key: "getShipsByUUID",
     query: gql`
