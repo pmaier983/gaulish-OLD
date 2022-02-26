@@ -29,29 +29,47 @@ export const Map = () => {
           y
           type
         }
+        getAllCities {
+          id
+          city_id
+          name
+          tile {
+            id
+            tile_id
+            x
+            y
+            type
+          }
+        }
       }
     `,
   })
 
+  const tiles = data?.getAllTiles
+  const cities = data?.getAllCities
   // TODO: fix useQuery I mean really
-  const map = data?.getAllTiles as Tile[]
 
-  const mapWidth = getMapWidth(map)
-  const mapHeight = getMapHeight(map)
+  const mapWidth = getMapWidth(tiles)
+  const mapHeight = getMapHeight(tiles)
 
-  const mapArray = useMemo(() => {
-    return map?.reduce(
-      (accMapArray, currentTile) => {
-        const { x, y } = currentTile
-        accMapArray[x][y] = currentTile
-        return accMapArray
-      },
-      Array.from(Array(mapWidth), () => Array(mapHeight))
-    )
-  }, [map, mapHeight, mapWidth])
+  const map = useMemo(() => {
+    if (!tiles || !cities) return
+    // TODO: do this immutably
+    const mapArray = Array.from(Array(mapWidth), () => Array(mapHeight))
+    tiles.forEach((tile) => {
+      mapArray[tile.x][tile.y] = { tile }
+    })
+    cities.forEach((city) => {
+      if (city?.tile) {
+        const currentMapTile = mapArray[city?.tile.x][city?.tile.y]
+        mapArray[city?.tile.x][city?.tile.y] = { ...currentMapTile, city: city }
+      }
+    })
+    return mapArray
+  }, [tiles, mapHeight, mapWidth, cities])
 
   // TODO: handle no data state better?
-  if (isLoading) {
+  if (isLoading || !data || !map) {
     // TODO: nicer Loading icon
     return (
       <StyledWrapper
@@ -66,6 +84,7 @@ export const Map = () => {
     )
   }
 
+  // TODO: have a second grid above the first to visualize the moving parts.
   return (
     <StyledWrapper>
       <AutoSizer>
@@ -79,10 +98,7 @@ export const Map = () => {
             rowHeight={cellSize}
           >
             {(props) => (
-              <Cell
-                {...props}
-                data={mapArray[props.columnIndex][props.rowIndex]}
-              />
+              <Cell {...props} data={map[props.columnIndex][props.rowIndex]} />
             )}
           </VirtualizedGrid>
         )}
