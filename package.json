@@ -27,7 +27,7 @@
     "react-query": "^3.23.2",
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.6",
