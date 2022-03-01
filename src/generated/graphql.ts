@@ -17,30 +17,12 @@ export type Scalars = {
   Float: number
 }
 
-export type Chat = Node & {
-  __typename?: "Chat"
-  id: Scalars["ID"]
-  text: Scalars["String"]
-  time: Scalars["String"]
-  username?: Maybe<Scalars["String"]>
-}
-
 export type City = Node & {
   __typename?: "City"
   city_id: Scalars["Int"]
   id: Scalars["ID"]
   name: Scalars["String"]
   tile: Tile
-}
-
-export type Mutation = {
-  __typename?: "Mutation"
-  chatGlobally?: Maybe<Scalars["Boolean"]>
-}
-
-export type MutationChatGloballyArgs = {
-  text: Scalars["String"]
-  username: Scalars["String"]
 }
 
 export type Node = {
@@ -94,11 +76,6 @@ export type Ship = Node & {
   ship_id: Scalars["Int"]
   ship_type_id: Scalars["Int"]
   uuid: Scalars["Int"]
-}
-
-export type Subscription = {
-  __typename?: "Subscription"
-  globalChat: Chat
 }
 
 export type Tile = Node & {

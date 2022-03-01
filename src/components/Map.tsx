@@ -7,7 +7,6 @@ import { gql } from "graphql-request"
 import { useMapContext } from "@/context/MapProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { getMapHeight, getMapWidth } from "@/utils/helperFunctions"
-import type { Tile } from "@/generated/graphql"
 import { Cell } from "@/components"
 
 const StyledWrapper = styled.div`

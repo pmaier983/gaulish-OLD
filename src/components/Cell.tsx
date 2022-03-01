@@ -39,7 +39,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
         `
       }
       default:
-        console.error("This cell type is not supported")
+        console.error("This cell type is not supported. Type:", type)
         return css``
     }
   }}
@@ -51,7 +51,11 @@ export const Cell = ({
 }: GridChildComponentProps<{ tile: Tile; city: City }>) => {
   const { city, tile } = data
   if (city) {
-    return <StyledWrapper style={style}>{city.name}</StyledWrapper>
+    return (
+      <StyledWrapper style={style} type={tile.type}>
+        {city.name}
+      </StyledWrapper>
+    )
   }
   return <StyledWrapper style={style} type={tile.type}></StyledWrapper>
 }

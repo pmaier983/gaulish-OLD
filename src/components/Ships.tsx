@@ -39,7 +39,6 @@ export const Ships = () => {
               value="ShipName"
               checked={selectedShipId === currentShipId}
               onChange={() => {
-                console.log("he", selectedShipId)
                 dispatchShipAction({
                   type: SHIP_ACTIONS.TOGGLE_SELECT_SHIP,
                   payload: currentShipId,
