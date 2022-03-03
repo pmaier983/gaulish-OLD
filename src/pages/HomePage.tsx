@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { Header, Footer, SidebarLeft, SidebarRight, Map } from "@/components"
+import { Header, Footer, SidebarLeft, Map } from "@/components"
 
 const StyledWrapper = styled.div`
   display: grid;
@@ -9,7 +9,7 @@ const StyledWrapper = styled.div`
   grid-template-rows: 100px 1fr 200px;
   grid-template-areas:
     "header header header"
-    "sidebarLeft map sidebarRight"
+    "sidebarLeft map map"
     "footer footer footer";
 `
 
@@ -19,7 +19,6 @@ export const HomePage = () => {
       <Header />
       <SidebarLeft />
       <Map />
-      <SidebarRight />
       <Footer />
     </StyledWrapper>
   )
