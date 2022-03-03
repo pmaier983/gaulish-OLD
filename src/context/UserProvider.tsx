@@ -49,7 +49,7 @@ const getUser = (token?: string) => {
 }
 
 // TODO: do something about repeat use of getToken?
-const getToken = (): string | null => {
+export const getToken = (): string | null => {
   const localStorageToken = window.localStorage.getItem(
     LOCAL_STORAGE_KEYS.TOKEN
   )
