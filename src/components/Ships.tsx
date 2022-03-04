@@ -5,9 +5,9 @@ import { useShipContext } from "@/context/ShipProvider"
 
 const StyledWrapper = styled.div`
   display: flex;
-  width: 50%;
-  height: 100%;
   background-color: lightgrey;
+  flex: 1;
+  padding: 10px;
 `
 
 export const Ships = () => {
