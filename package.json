@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@reach/checkbox": "^0.16.0",
-    "@socket.io/component-emitter": "^3.0.0",
     "graphql-request": "^3.5.0",
     "graphql-ws": "^5.5.0",
     "react": "^17.0.2",

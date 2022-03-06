@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 
 import io, { Socket } from "socket.io-client"
-import type { DefaultEventsMap } from "@socket.io/component-emitter" // TODO: can i get this type from elsewhere?
 import { getToken } from "./UserProvider"
 
-type SocketWrapper = Socket<DefaultEventsMap, DefaultEventsMap>
+type SocketWrapper = Socket
 
 interface SocketProviderState {
   socket?: SocketWrapper
