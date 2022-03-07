@@ -6,11 +6,12 @@ import { getToken } from "./UserProvider"
 type SocketWrapper = Socket
 
 interface SocketProviderState {
-  socket?: SocketWrapper
+  socket: SocketWrapper
 }
 
 const initialState: SocketProviderState = {
-  socket: undefined,
+  // TODO: is there a better way to type this?
+  socket: {} as Socket,
 }
 
 export const SocketContext = createContext({
