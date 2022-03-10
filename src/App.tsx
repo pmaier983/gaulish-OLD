@@ -8,9 +8,9 @@ import { useUserContext } from "@/context/UserProvider"
 // TODO: setup 404 page
 // TODO: bump to husky 7.X
 const App = () => {
-  const { isLoggedIn } = useUserContext()
+  const { isLoggedIn, isLoading } = useUserContext()
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || isLoading) {
     return <LoginPage />
   }
 

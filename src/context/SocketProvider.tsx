@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 
 import io, { Socket } from "socket.io-client"
-import { getToken } from "./UserProvider"
+import { clearToken, getToken } from "./UserProvider"
 
 type SocketWrapper = Socket
 
@@ -20,23 +20,29 @@ export const SocketContext = createContext({
 
 export const useSocketContext = () => useContext(SocketContext)
 
+const socket = io(process.env.SNOWPACK_PUBLIC_API_URL_DOMAIN, {
+  extraHeaders: {
+    authorization: `Bearer ${getToken()}`,
+  },
+})
+
 export const SocketProvider: React.FC = ({ children }) => {
-  const [socket, setSocket] = useState<SocketWrapper>()
-
   useEffect(() => {
-    const newSocket = io(process.env.SNOWPACK_PUBLIC_API_URL_DOMAIN, {
-      extraHeaders: {
-        authorization: `Bearer ${getToken()}`,
-      },
+    socket.on("connect", () => {
+      console.log("connection!")
     })
-    setSocket(newSocket)
+    socket.on("disconnect", () => {
+      console.log("disconnect")
+    })
+    socket.on("connect_error", (e) => {
+      console.log("connect_error", e)
+      clearToken()
+    })
     return () => {
-      newSocket.close()
+      socket.off("connect")
+      socket.off("disconnect")
     }
-  }, [setSocket])
-
-  // TODO: handle loading state
-  if (!socket) return <div>Loading...</div>
+  })
 
   return (
     <SocketContext.Provider value={{ socket }}>

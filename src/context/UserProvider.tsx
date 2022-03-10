@@ -5,11 +5,13 @@ import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 import { useQuery } from "@/hooks/useQuery"
 import { client } from "@/client"
 import type { User } from "@/generated/graphql"
+import { LoginPage } from "@/pages/LoginPage"
 
 interface UserContextState {
   // TODO: how to fix this user null state?
   user?: User
   isLoggedIn: boolean
+  isLoading: boolean
   setUser: (user: User) => void
   logoutUser: () => void
 }
@@ -64,6 +66,10 @@ export const getToken = (): string | null => {
   return null
 }
 
+export const clearToken = () => {
+  window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+}
+
 // TODO: store JWT in http only cookie [if possible] (Also setup Refresh Token Auth)
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // TODO verify token b4 getting user?
@@ -89,11 +95,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
           }
           setLoginStatus(true)
         } else {
-          window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+          clearToken()
         }
       },
       onError: () => {
-        window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+        clearToken()
       },
       // Finally scrub the token from the url
       onSettled: () => {
@@ -117,8 +123,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const logoutUser = () => {
     setLoginStatus(false)
     setUser(undefined)
-    window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+    clearToken()
   }
+
+  // TODO: workout these dang error states... I mean really
+  if (isLoading || !isLoggedIn || !user) return <LoginPage />
 
   return (
     <UserContext.Provider

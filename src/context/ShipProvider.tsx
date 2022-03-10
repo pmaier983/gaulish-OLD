@@ -117,7 +117,6 @@ export const ShipProvider: React.FC = ({ children }) => {
     key: "getShipsByUUID",
     query: gql`
       {
-        # TODO: how to handle this with variables?
         getShipsByUUID(uuid: ${user?.uuid}) {
           id
           ship_id

@@ -13,9 +13,9 @@ import { SocketProvider } from "@/context/SocketProvider"
 // TODO: figure out React.PropsWithChildren
 const AppWrapper: React.FC = ({ children }) => {
   return (
-    <QueryProvider>
-      <UserProvider>
-        <ThemeWrapper>
+    <ThemeWrapper>
+      <QueryProvider>
+        <UserProvider>
           <SocketProvider>
             <ShipProvider>
               <MapProvider>
@@ -24,9 +24,9 @@ const AppWrapper: React.FC = ({ children }) => {
               </MapProvider>
             </ShipProvider>
           </SocketProvider>
-        </ThemeWrapper>
-      </UserProvider>
-    </QueryProvider>
+        </UserProvider>
+      </QueryProvider>
+    </ThemeWrapper>
   )
 }
 
