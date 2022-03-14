@@ -21,6 +21,7 @@ interface MapProviderState {
 interface Action {
   type: string
   // TODO: Specify state of payload
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any
 }
 

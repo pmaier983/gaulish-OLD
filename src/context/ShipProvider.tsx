@@ -4,7 +4,6 @@ import type { Ship } from "@/generated/graphql"
 import { useQuery } from "@/hooks/useQuery"
 import { gql } from "graphql-request"
 import { useUserContext } from "./UserProvider"
-import { css } from "styled-components"
 
 export const SHIP_ACTIONS = {
   TOGGLE_SELECT_SHIP: "TOGGLE_SELECT_SHIP",
@@ -148,20 +147,8 @@ export const ShipProvider: React.FC = ({ children }) => {
     },
   })
 
-  // TODO: handle no data state better?
   if (isLoading) {
-    // TODO: nicer Loading icon
-    return (
-      <div
-        css={css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        `}
-      >
-        Loading...
-      </div>
-    )
+    return <div>Loading Ships...</div>
   }
 
   return (

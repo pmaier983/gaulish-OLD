@@ -126,8 +126,9 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     clearToken()
   }
 
-  // TODO: workout these dang error states... I mean really
-  if (isLoading || !isLoggedIn || !user) return <LoginPage />
+  if (!isLoggedIn || !user) return <LoginPage />
+
+  if (isLoading) return <div>Loading User...</div>
 
   return (
     <UserContext.Provider
