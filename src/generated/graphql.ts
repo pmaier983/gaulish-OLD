@@ -17,6 +17,17 @@ export type Scalars = {
   Float: number
 }
 
+export type Chat = Node & {
+  __typename?: "Chat"
+  chat_id?: Maybe<Scalars["Int"]>
+  id: Scalars["ID"]
+  recipient_uuid?: Maybe<Scalars["Int"]>
+  room_id?: Maybe<Scalars["Int"]>
+  text?: Maybe<Scalars["String"]>
+  timestamp?: Maybe<Scalars["Int"]>
+  uuid?: Maybe<Scalars["Int"]>
+}
+
 export type City = Node & {
   __typename?: "City"
   city_id: Scalars["Int"]
@@ -38,12 +49,18 @@ export type Query = {
   __typename?: "Query"
   getAllCities: Array<Maybe<City>>
   getAllTiles: Array<Tile>
+  getChatHistory: Array<Maybe<Chat>>
   getShipsByUUID: Array<Maybe<Ship>>
   getTileByID: Tile
   getTilesAroundTile: Array<Tile>
   getTilesWithinRectangle: Array<Tile>
   getUserByUsername: User
   verifyToken: Scalars["Boolean"]
+}
+
+export type QueryGetChatHistoryArgs = {
+  room_id?: Maybe<Scalars["Int"]>
+  timestamp: Scalars["Int"]
 }
 
 export type QueryGetShipsByUuidArgs = {
