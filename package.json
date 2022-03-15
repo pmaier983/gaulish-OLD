@@ -20,7 +20,6 @@
   "dependencies": {
     "@reach/checkbox": "^0.16.0",
     "graphql-request": "^3.5.0",
-    "graphql-ws": "^5.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.15.2",
