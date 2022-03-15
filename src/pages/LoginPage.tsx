@@ -15,7 +15,7 @@ const StyledButtonWrapper = styled.div`
   width: 300px;
   height: 500px;
   border-radius: 3px;
-  border: 1px solid ${({ theme }) => theme.color.primary};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
 `
 
 const StyledButton = styled.button`

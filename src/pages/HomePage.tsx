@@ -1,31 +1,25 @@
-import { useState } from "react"
 import styled from "styled-components"
 
-import { MixedCheckbox } from "@reach/checkbox"
-import { toggleWebsocketsEnabled } from "@/utils/helperFunctions"
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
-import { ChatBox } from "@/components/ChatBox"
+import { Header, Footer, SidebarLeft, Map } from "@/components"
 
 const StyledWrapper = styled.div`
+  display: grid;
   height: 100%;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: 100px 1fr 200px;
+  grid-template-areas:
+    "header header header"
+    "sidebarLeft map map"
+    "footer footer footer";
 `
 
 export const HomePage = () => {
-  const [checked, setChecked] = useState(
-    !!window.localStorage.getItem(LOCAL_STORAGE_KEYS.HAS_WEBSOCKET_ENABLED)
-  )
-
   return (
     <StyledWrapper>
-      Enable Chat
-      <MixedCheckbox
-        checked={checked}
-        onChange={({ target: { checked } }) => {
-          setChecked(checked)
-          toggleWebsocketsEnabled(checked)
-        }}
-      />
-      {checked && <ChatBox />}
+      <Header />
+      <SidebarLeft />
+      <Map />
+      <Footer />
     </StyledWrapper>
   )
 }

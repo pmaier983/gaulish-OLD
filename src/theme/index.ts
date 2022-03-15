@@ -1,5 +1,9 @@
-import { color } from "./color"
+import { typography } from "./typography"
+import { colors } from "./colors"
+import { styles } from "./styles"
 
 export const theme = {
-  color,
+  colors,
+  styles,
+  typography,
 }

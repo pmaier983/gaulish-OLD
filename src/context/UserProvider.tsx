@@ -1,14 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { gql } from "graphql-request"
 
-import { LOCAL_STORAGE_KEYS } from "@/utils/enums"
+import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
 import { useQuery } from "@/hooks/useQuery"
 import { client } from "@/client"
 import type { User } from "@/generated/graphql"
+import { LoginPage } from "@/pages/LoginPage"
 
 interface UserContextState {
+  // TODO: how to fix this user null state?
   user?: User
   isLoggedIn: boolean
+  isLoading: boolean
   setUser: (user: User) => void
   logoutUser: () => void
 }
@@ -48,7 +51,7 @@ const getUser = (token?: string) => {
 }
 
 // TODO: do something about repeat use of getToken?
-const getToken = (): string | null => {
+export const getToken = (): string | null => {
   const localStorageToken = window.localStorage.getItem(
     LOCAL_STORAGE_KEYS.TOKEN
   )
@@ -61,6 +64,10 @@ const getToken = (): string | null => {
     return queryObject.get(urlTokenKey)
   }
   return null
+}
+
+export const clearToken = () => {
+  window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
 }
 
 // TODO: store JWT in http only cookie [if possible] (Also setup Refresh Token Auth)
@@ -88,11 +95,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
           }
           setLoginStatus(true)
         } else {
-          window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+          clearToken()
         }
       },
       onError: () => {
-        window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+        clearToken()
       },
       // Finally scrub the token from the url
       onSettled: () => {
@@ -116,8 +123,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const logoutUser = () => {
     setLoginStatus(false)
     setUser(undefined)
-    window.localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN)
+    clearToken()
   }
+
+  if (!isLoggedIn || !user) return <LoginPage />
+
+  if (isLoading) return <div>Loading User...</div>
 
   return (
     <UserContext.Provider

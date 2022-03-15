@@ -19,20 +19,21 @@ export type Scalars = {
 
 export type Chat = Node & {
   __typename?: "Chat"
+  chat_id?: Maybe<Scalars["Int"]>
   id: Scalars["ID"]
-  text: Scalars["String"]
-  time: Scalars["String"]
-  username?: Maybe<Scalars["String"]>
+  recipient_uuid?: Maybe<Scalars["Int"]>
+  room_id?: Maybe<Scalars["Int"]>
+  text?: Maybe<Scalars["String"]>
+  timestamp?: Maybe<Scalars["Int"]>
+  uuid?: Maybe<Scalars["Int"]>
 }
 
-export type Mutation = {
-  __typename?: "Mutation"
-  chatGlobally?: Maybe<Scalars["Boolean"]>
-}
-
-export type MutationChatGloballyArgs = {
-  text: Scalars["String"]
-  username: Scalars["String"]
+export type City = Node & {
+  __typename?: "City"
+  city_id: Scalars["Int"]
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  tile: Tile
 }
 
 export type Node = {
@@ -46,12 +47,24 @@ export type Point = {
 
 export type Query = {
   __typename?: "Query"
-  getAllTiles?: Maybe<Array<Maybe<Tile>>>
-  getTileByID?: Maybe<Tile>
-  getTilesAroundTile?: Maybe<Array<Maybe<Tile>>>
-  getTilesWithinRectangle?: Maybe<Array<Maybe<Tile>>>
-  getUserByUsername?: Maybe<User>
+  getAllCities: Array<Maybe<City>>
+  getAllTiles: Array<Tile>
+  getChatHistory: Array<Maybe<Chat>>
+  getShipsByUUID: Array<Maybe<Ship>>
+  getTileByID: Tile
+  getTilesAroundTile: Array<Tile>
+  getTilesWithinRectangle: Array<Tile>
+  getUserByUsername: User
   verifyToken: Scalars["Boolean"]
+}
+
+export type QueryGetChatHistoryArgs = {
+  room_id?: Maybe<Scalars["Int"]>
+  timestamp: Scalars["Int"]
+}
+
+export type QueryGetShipsByUuidArgs = {
+  uuid?: Maybe<Scalars["Int"]>
 }
 
 export type QueryGetTileByIdArgs = {
@@ -72,17 +85,30 @@ export type QueryGetUserByUsernameArgs = {
   username?: Maybe<Scalars["String"]>
 }
 
-export type Subscription = {
-  __typename?: "Subscription"
-  globalChat: Chat
+export type Ship = Node & {
+  __typename?: "Ship"
+  city: City
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  ship_id: Scalars["Int"]
+  ship_type_id: Scalars["Int"]
+  uuid: Scalars["Int"]
 }
 
 export type Tile = Node & {
   __typename?: "Tile"
   id: Scalars["ID"]
-  tile_id?: Maybe<Scalars["Int"]>
-  x?: Maybe<Scalars["Int"]>
-  y?: Maybe<Scalars["Int"]>
+  tile_id: Scalars["Int"]
+  type: TileTypes
+  x: Scalars["Int"]
+  y: Scalars["Int"]
+}
+
+export enum TileTypes {
+  Forest = "forest",
+  Meadows = "meadows",
+  Mountains = "mountains",
+  Ocean = "ocean",
 }
 
 export type User = Node & {
