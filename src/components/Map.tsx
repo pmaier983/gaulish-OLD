@@ -65,10 +65,10 @@ export const Map = () => {
       }
     })
     return mapArray
-  }, [tiles, mapHeight, mapWidth, cities])
+  }, [tiles, cities, mapWidth, mapHeight])
 
   // TODO: handle no data state better?
-  if (isLoading || !data || !map) {
+  if (isLoading || !map) {
     // TODO: nicer Loading icon
     return (
       <StyledWrapper

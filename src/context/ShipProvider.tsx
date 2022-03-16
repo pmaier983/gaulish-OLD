@@ -24,7 +24,6 @@ interface Action {
 }
 
 const initialState: ShipProviderState = {
-  // TODO: is this IIFE bad?
   selectedShipId: undefined,
   ships: [],
   SHIP_ACTIONS,
