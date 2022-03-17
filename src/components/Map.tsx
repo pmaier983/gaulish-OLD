@@ -17,6 +17,7 @@ export const Map = () => {
   const { cellSize } = useMapContext()
 
   // TODO: handle Error
+  // TODO: fix useQuery I mean really
   const { isLoading, data } = useQuery({
     key: "getAllTiles",
     query: gql`
@@ -46,7 +47,6 @@ export const Map = () => {
 
   const tiles = data?.getAllTiles
   const cities = data?.getAllCities
-  // TODO: fix useQuery I mean really
 
   const mapWidth = getMapWidth(tiles)
   const mapHeight = getMapHeight(tiles)
