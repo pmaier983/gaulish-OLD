@@ -1,22 +1,17 @@
 import { useMemo } from "react"
-import { FixedSizeGrid as VirtualizedGrid } from "react-window"
-import AutoSizer from "react-virtualized-auto-sizer"
 import styled, { css } from "styled-components"
 import { gql } from "graphql-request"
 
-import { useMapContext } from "@/context/MapProvider"
 import { useQuery } from "@/hooks/useQuery"
 import { getMapDimensions } from "@/utils/helperFunctions"
-import { Cell } from "@/components"
 import { buildMap } from "./utils"
+import { InnerRefreshingMap } from "./InnerRefreshingMap"
 
 const StyledWrapper = styled.div`
   grid-area: map;
 `
 
 export const Map = () => {
-  const { cellSize } = useMapContext()
-
   // TODO: handle Error
   // TODO: fix useQuery I mean really
   // TODO: use .gql files
@@ -78,22 +73,7 @@ export const Map = () => {
 
   return (
     <StyledWrapper>
-      <AutoSizer>
-        {({ height, width }) => (
-          <VirtualizedGrid
-            height={height}
-            width={width}
-            columnCount={mapWidth}
-            columnWidth={cellSize}
-            rowCount={mapHeight}
-            rowHeight={cellSize}
-          >
-            {(props) => (
-              <Cell {...props} data={map[props.columnIndex][props.rowIndex]} />
-            )}
-          </VirtualizedGrid>
-        )}
-      </AutoSizer>
+      <InnerRefreshingMap mapHeight={mapHeight} mapWidth={mapWidth} map={map} />
     </StyledWrapper>
   )
 }

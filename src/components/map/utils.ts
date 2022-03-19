@@ -8,7 +8,16 @@ interface BuildMap {
   mapHeight: number
 }
 
-export const buildMap = ({ tiles, cities, mapWidth, mapHeight }: BuildMap) => {
+export type Cell = { tile: Tile; city?: City }
+
+export type Map = Cell[][]
+
+export const buildMap = ({
+  tiles,
+  cities,
+  mapWidth,
+  mapHeight,
+}: BuildMap): Map | undefined => {
   if (!tiles || !cities) return
   // TODO: do this immutably
   const mapArray = Array.from(Array(mapWidth), () => Array(mapHeight))

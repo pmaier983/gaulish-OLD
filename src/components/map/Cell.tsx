@@ -1,7 +1,8 @@
 import type { GridChildComponentProps } from "react-window"
 import styled, { css } from "styled-components"
 
-import { City, Tile, TileTypes } from "@/generated/graphql"
+import { TileTypes } from "@/generated/graphql"
+import type { Cell as CellType } from "./utils"
 
 interface StyledWrapperProps {
   type?: TileTypes
@@ -45,10 +46,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
   }}
 `
 
-export const Cell = ({
-  style,
-  data,
-}: GridChildComponentProps<{ tile: Tile; city: City }>) => {
+export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const { city, tile } = data
   if (city) {
     return (

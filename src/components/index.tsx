@@ -1,5 +1,4 @@
 // TODO: anyway to automate this?
-export * from "./Cell"
 export * from "./Footer"
 export * from "./map/Map"
 export * from "./Header"
