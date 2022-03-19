@@ -41,7 +41,6 @@ const reducer = (state: VisibilityQueueProviderState, action: Action) => {
 
 // TODO: properly type this.
 export const VisibilityQueueProvider: React.FC = ({ children }) => {
-  // TODO: test, does passing the value as an object vs. an array effect re-renders?
   const [state, dispatchVisibilityQueueAction] = useReducer(
     reducer,
     initialState

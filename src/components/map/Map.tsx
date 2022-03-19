@@ -6,8 +6,9 @@ import { gql } from "graphql-request"
 
 import { useMapContext } from "@/context/MapProvider"
 import { useQuery } from "@/hooks/useQuery"
-import { getMapHeight, getMapWidth } from "@/utils/helperFunctions"
+import { getMapDimensions } from "@/utils/helperFunctions"
 import { Cell } from "@/components"
+import { buildMap } from "./utils"
 
 const StyledWrapper = styled.div`
   grid-area: map;
@@ -18,8 +19,9 @@ export const Map = () => {
 
   // TODO: handle Error
   // TODO: fix useQuery I mean really
+  // TODO: use .gql files
   const { isLoading, data } = useQuery({
-    key: "getAllTiles",
+    key: "getMap",
     query: gql`
       {
         getAllTiles {
@@ -45,27 +47,18 @@ export const Map = () => {
     `,
   })
 
-  const tiles = data?.getAllTiles
-  const cities = data?.getAllCities
+  const [mapWidth, mapHeight] = getMapDimensions(data?.getAllTiles)
 
-  const mapWidth = getMapWidth(tiles)
-  const mapHeight = getMapHeight(tiles)
-
-  const map = useMemo(() => {
-    if (!tiles || !cities) return
-    // TODO: do this immutably
-    const mapArray = Array.from(Array(mapWidth), () => Array(mapHeight))
-    tiles.forEach((tile) => {
-      mapArray[tile.x][tile.y] = { tile }
-    })
-    cities.forEach((city) => {
-      if (city?.tile) {
-        const currentMapTile = mapArray[city?.tile.x][city?.tile.y]
-        mapArray[city?.tile.x][city?.tile.y] = { ...currentMapTile, city: city }
-      }
-    })
-    return mapArray
-  }, [tiles, cities, mapWidth, mapHeight])
+  const map = useMemo(
+    () =>
+      buildMap({
+        cities: data?.getAllCities,
+        tiles: data?.getAllTiles,
+        mapHeight,
+        mapWidth,
+      }),
+    [data, mapWidth, mapHeight]
+  )
 
   // TODO: handle no data state better?
   if (isLoading || !map) {
@@ -83,7 +76,6 @@ export const Map = () => {
     )
   }
 
-  // TODO: have a second grid above the first to visualize the moving parts.
   return (
     <StyledWrapper>
       <AutoSizer>

@@ -47,10 +47,10 @@ export type Point = {
 
 export type Query = {
   __typename?: "Query"
-  getAllCities: Array<Maybe<City>>
+  getAllCities: Array<City>
   getAllTiles: Array<Tile>
-  getChatHistory: Array<Maybe<Chat>>
-  getShipsByUUID: Array<Maybe<Ship>>
+  getChatHistory: Array<Chat>
+  getShipsByUUID: Array<Ship>
   getTileByID: Tile
   getTilesAroundTile: Array<Tile>
   getTilesWithinRectangle: Array<Tile>
