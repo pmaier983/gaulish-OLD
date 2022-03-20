@@ -46,6 +46,8 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
   }}
 `
 
+// TODO: reduce re-renders via memoization!
+// https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const { city, tile, npcs } = data
 

@@ -27,9 +27,10 @@ export const InnerRefreshingMap = ({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      const mapClone = clone(map)
+
       npcs.forEach((npc) => {
         // TODO: a better way to do this?
-        const mapClone = clone(map)
         const {
           start_time,
           path,
@@ -44,8 +45,12 @@ export const InnerRefreshingMap = ({
         } else {
           mapClone[x][y] = { ...tile, npcs: [npc] }
         }
-        setInnerMap(mapClone)
       })
+
+      // TODO: do actual deep equality check here
+      if (JSON.stringify(mapClone) !== JSON.stringify(innerMap)) {
+        setInnerMap(mapClone)
+      }
     }, 1000)
     return () => clearInterval(intervalId)
   })
