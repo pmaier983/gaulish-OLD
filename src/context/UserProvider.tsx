@@ -32,7 +32,6 @@ export const UserContext = createContext({
 export const useUserContext = (): UserContextState => useContext(UserContext)
 
 // TODO: atob -> Buffer (possibly need polyfill?)
-// TODO: clean this up into separate functions
 const getUser = (token?: string) => {
   // if passed a token parse the token
   if (token) {

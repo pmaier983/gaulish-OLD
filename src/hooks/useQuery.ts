@@ -9,7 +9,7 @@ interface Variables {
 }
 
 interface UseCustomQuery<Result> {
-  key: keyof Omit<Query, "__typename">
+  key: keyof Omit<Query, "__typename"> | "getMap"
   query: string
   variables?: Variables
   queryOptions?: UseQueryOptions<Result>

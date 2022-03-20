@@ -40,6 +40,15 @@ export type Node = {
   id: Scalars["ID"]
 }
 
+export type Npc = Node & {
+  __typename?: "Npc"
+  id: Scalars["ID"]
+  path: Array<Tile>
+  ship_type: ShipType
+  should_repeat: Scalars["Boolean"]
+  start_time: Scalars["Int"]
+}
+
 export type Point = {
   x?: Maybe<Scalars["Int"]>
   y?: Maybe<Scalars["Int"]>
@@ -47,10 +56,12 @@ export type Point = {
 
 export type Query = {
   __typename?: "Query"
-  getAllCities: Array<Maybe<City>>
+  getAllCities: Array<City>
+  getAllNpcs: Array<Npc>
   getAllTiles: Array<Tile>
-  getChatHistory: Array<Maybe<Chat>>
-  getShipsByUUID: Array<Maybe<Ship>>
+  getChatHistory: Array<Chat>
+  getShipTypeFromId: ShipType
+  getShipsByUUID: Array<Ship>
   getTileByID: Tile
   getTilesAroundTile: Array<Tile>
   getTilesWithinRectangle: Array<Tile>
@@ -61,6 +72,10 @@ export type Query = {
 export type QueryGetChatHistoryArgs = {
   room_id?: Maybe<Scalars["Int"]>
   timestamp: Scalars["Int"]
+}
+
+export type QueryGetShipTypeFromIdArgs = {
+  shipTypeId?: Maybe<Scalars["Int"]>
 }
 
 export type QueryGetShipsByUuidArgs = {
@@ -91,8 +106,18 @@ export type Ship = Node & {
   id: Scalars["ID"]
   name: Scalars["String"]
   ship_id: Scalars["Int"]
-  ship_type_id: Scalars["Int"]
+  ship_type: ShipType
   uuid: Scalars["Int"]
+}
+
+export type ShipType = Node & {
+  __typename?: "ShipType"
+  cargo_capacity: Scalars["Int"]
+  id: Scalars["ID"]
+  inventory_slots: Scalars["Int"]
+  name: Scalars["String"]
+  ship_type_id: Scalars["Int"]
+  speed: Scalars["Int"]
 }
 
 export type Tile = Node & {
