@@ -1,5 +1,4 @@
-import { City } from "@/generated/graphql"
-import { Tile } from "@/generated/graphql"
+import type { City, Tile, Npc } from "@/generated/graphql"
 
 interface BuildMap {
   tiles?: Tile[]
@@ -8,7 +7,7 @@ interface BuildMap {
   mapHeight: number
 }
 
-export type Cell = { tile: Tile; city?: City }
+export type Cell = { tile: Tile; city?: City; npcs?: Npc[] }
 
 export type Map = Cell[][]
 

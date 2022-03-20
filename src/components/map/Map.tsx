@@ -38,6 +38,25 @@ export const Map = () => {
             type
           }
         }
+        getAllNpcs {
+          id
+          start_time
+          ship_type {
+            id
+            ship_type_id
+            name
+            cargo_capacity
+            inventory_slots
+            speed
+          }
+          path {
+            id
+            tile_id
+            type
+            x
+            y
+          }
+        }
       }
     `,
   })
@@ -55,8 +74,9 @@ export const Map = () => {
     [data, mapWidth, mapHeight]
   )
 
-  // TODO: handle no data state better?
-  if (isLoading || !map) {
+  const npcs = data?.getAllNpcs
+
+  if (isLoading) {
     // TODO: nicer Loading icon
     return (
       <StyledWrapper
@@ -71,9 +91,19 @@ export const Map = () => {
     )
   }
 
+  // TODO: handle no data state better?
+  if (!map || !npcs) {
+    return <div>The Map and/or npcs did not load...</div>
+  }
+
   return (
     <StyledWrapper>
-      <InnerRefreshingMap mapHeight={mapHeight} mapWidth={mapWidth} map={map} />
+      <InnerRefreshingMap
+        mapHeight={mapHeight}
+        mapWidth={mapWidth}
+        map={map}
+        npcs={npcs}
+      />
     </StyledWrapper>
   )
 }

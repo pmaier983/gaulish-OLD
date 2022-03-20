@@ -47,7 +47,16 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
 `
 
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
-  const { city, tile } = data
+  const { city, tile, npcs } = data
+
+  if (npcs) {
+    return (
+      <StyledWrapper style={style} type={tile.type}>
+        npc
+      </StyledWrapper>
+    )
+  }
+
   if (city) {
     return (
       <StyledWrapper style={style} type={tile.type}>

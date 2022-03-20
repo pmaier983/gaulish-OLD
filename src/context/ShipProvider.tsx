@@ -120,7 +120,14 @@ export const ShipProvider: React.FC = ({ children }) => {
           ship_id
           name
           uuid
-          ship_type_id
+          ship_type {
+            id
+            ship_type_id
+            name
+            cargo_capacity
+            inventory_slots
+            speed
+          }
           city {
             id
             city_id
