@@ -7,7 +7,6 @@ import { GlobalStyle } from "@/utils/globalStyles"
 import { MapProvider } from "@/context/MapProvider"
 import { ShipProvider } from "@/context/ShipProvider"
 import { SocketProvider } from "@/context/SocketProvider"
-import { VisibilityQueueProvider } from "@/context/VisibilityQueueProvider"
 
 // TODO: setup internationalization
 // TODO: is there a better way to type this (if you need children?)
@@ -20,9 +19,7 @@ const AppWrapper: React.FC = ({ children }) => (
       <UserProvider>
         <SocketProvider>
           <ShipProvider>
-            <MapProvider>
-              <VisibilityQueueProvider>{children}</VisibilityQueueProvider>
-            </MapProvider>
+            <MapProvider>{children}</MapProvider>
           </ShipProvider>
         </SocketProvider>
       </UserProvider>
