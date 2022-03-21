@@ -1,11 +1,12 @@
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import styled, { css } from "styled-components"
 import { gql } from "graphql-request"
 
 import { useQuery } from "@/hooks/useQuery"
 import { getMapDimensions } from "@/utils/helperFunctions"
-import { buildMap } from "./utils"
+import { buildMap, Cell } from "./utils"
 import { InnerRefreshingMap } from "./InnerRefreshingMap"
+import { useShipContext } from "@/context/ShipProvider"
 
 const StyledWrapper = styled.div`
   grid-area: map;
@@ -13,6 +14,7 @@ const StyledWrapper = styled.div`
 `
 
 export const Map = () => {
+  const { dispatchShipAction, SHIP_ACTIONS } = useShipContext()
   // TODO: handle Error
   // TODO: fix useQuery I mean really
   // TODO: use .gql files
@@ -64,6 +66,25 @@ export const Map = () => {
 
   const [mapWidth, mapHeight] = getMapDimensions(data?.getAllTiles)
 
+  // TODO: is useCallback redundant here?
+  const onCellClick = useCallback(
+    (cell: Cell) => {
+      if (cell.pathIndex === undefined) {
+        dispatchShipAction({
+          type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+          payload: cell.tile,
+        })
+      } else {
+        dispatchShipAction({ type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH })
+      }
+    },
+    [
+      SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+      SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+      dispatchShipAction,
+    ]
+  )
+
   const map = useMemo(
     () =>
       buildMap({
@@ -71,8 +92,9 @@ export const Map = () => {
         tiles: data?.getAllTiles,
         mapHeight,
         mapWidth,
+        onClick: onCellClick,
       }),
-    [data, mapWidth, mapHeight]
+    [data?.getAllCities, data?.getAllTiles, mapHeight, mapWidth, onCellClick]
   )
 
   const npcs = data?.getAllNpcs
