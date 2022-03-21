@@ -9,6 +9,7 @@ import { InnerRefreshingMap } from "./InnerRefreshingMap"
 
 const StyledWrapper = styled.div`
   grid-area: map;
+  padding: 5px 0;
 `
 
 export const Map = () => {

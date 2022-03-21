@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect } from "react"
 
 import io, { Socket } from "socket.io-client"
-import { clearToken, getToken } from "./UserProvider"
+import { getToken } from "./UserProvider"
 
 type SocketWrapper = Socket
 
@@ -36,7 +36,8 @@ export const SocketProvider: React.FC = ({ children }) => {
     })
     socket.on("connect_error", (e) => {
       console.log("connect_error", e)
-      clearToken()
+      // TODO: find a good way to do this?
+      // clearToken()
     })
     return () => {
       socket.off("connect")

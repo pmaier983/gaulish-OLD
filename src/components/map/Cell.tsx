@@ -49,11 +49,27 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
 // TODO: reduce re-renders via memoization!
 // https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
-  const { city, tile, npcs } = data
+  const { city, tile, npcs, pathIndex, onClick } = data
+
+  if (pathIndex !== undefined) {
+    return (
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onClick(data)}
+      >
+        {pathIndex}
+      </StyledWrapper>
+    )
+  }
 
   if (npcs) {
     return (
-      <StyledWrapper style={style} type={tile.type}>
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onClick(data)}
+      >
         npc
       </StyledWrapper>
     )
@@ -61,10 +77,20 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
 
   if (city) {
     return (
-      <StyledWrapper style={style} type={tile.type}>
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onClick(data)}
+      >
         {city.name}
       </StyledWrapper>
     )
   }
-  return <StyledWrapper style={style} type={tile.type}></StyledWrapper>
+  return (
+    <StyledWrapper
+      style={style}
+      type={tile.type}
+      onClick={() => onClick(data)}
+    ></StyledWrapper>
+  )
 }

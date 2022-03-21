@@ -1,17 +1,21 @@
 import React, { createContext, useContext, useReducer } from "react"
 
-import type { Ship } from "@/generated/graphql"
+import type { Ship, Tile } from "@/generated/graphql"
 import { useQuery } from "@/hooks/useQuery"
 import { gql } from "graphql-request"
 import { useUserContext } from "./UserProvider"
 
 export const SHIP_ACTIONS = {
   TOGGLE_SELECT_SHIP: "TOGGLE_SELECT_SHIP",
+  UN_SELECT_SHIP: "UN_SELECT_SHIP",
   SET_SHIPS: "SET_SHIPS",
+  ADD_TILE_SHIP_PATH: "ADD_TILE_SHIP_PATH",
+  REMOVE_TILE_SHIP_PATH: "REMOVE_TILE_SHIP_PATH",
 }
 
 interface ShipProviderState {
   SHIP_ACTIONS: typeof SHIP_ACTIONS
+  shipPath: Tile[]
   selectedShipId?: number
   ships: Ship[]
   getSelectedShip: () => Ship | void
@@ -25,6 +29,7 @@ interface Action {
 
 const initialState: ShipProviderState = {
   selectedShipId: undefined,
+  shipPath: [],
   ships: [],
   SHIP_ACTIONS,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -49,11 +54,13 @@ const reducer = (state: ShipProviderState, action: Action) => {
   switch (action.type) {
     case SHIP_ACTIONS.TOGGLE_SELECT_SHIP: {
       const newSelectedShipId = action.payload
+
       // if the ship is already the selected ship, remove it
       if (newSelectedShipId === state.selectedShipId) {
         return {
           ...state,
           selectedShipId: undefined,
+          shipPath: [],
         }
       }
 
@@ -65,6 +72,7 @@ const reducer = (state: ShipProviderState, action: Action) => {
           return {
             ...state,
             selectedShipId: newSelectedShipId,
+            shipPath: [curShip.city.tile],
           }
         }
       }
@@ -72,11 +80,37 @@ const reducer = (state: ShipProviderState, action: Action) => {
       // if the ship_id is not in the ships list, ignore it
       return state
     }
+    case SHIP_ACTIONS.UN_SELECT_SHIP: {
+      return {
+        ...state,
+        selectedShipId: undefined,
+        shipPath: [],
+      }
+    }
     case SHIP_ACTIONS.SET_SHIPS: {
-      // TODO: some data sifting here?
       return {
         ...state,
         ships: action.payload,
+      }
+    }
+    case SHIP_ACTIONS.ADD_TILE_SHIP_PATH: {
+      return {
+        ...state,
+        shipPath: [...state.shipPath, action.payload],
+      }
+    }
+    case SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH: {
+      const shipPathLessLastTile = state.shipPath.slice(0, -1)
+      if (shipPathLessLastTile.length === 0) {
+        return {
+          ...state,
+          shipPath: [],
+          selectedShipId: undefined,
+        }
+      }
+      return {
+        ...state,
+        shipPath: state.shipPath.slice(0, -1),
       }
     }
     default:

@@ -7,6 +7,7 @@ import { useMapContext } from "@/context/MapProvider"
 import type { Map } from "./utils"
 import type { Npc } from "@/generated/graphql"
 import { useEffect, useState } from "react"
+import { useShipContext } from "@/context/ShipProvider"
 
 interface InnerRefreshingMapInputs {
   mapWidth: number
@@ -23,14 +24,15 @@ export const InnerRefreshingMap = ({
 }: InnerRefreshingMapInputs) => {
   // TODO: stop constant re-renders!
   const [innerMap, setInnerMap] = useState(map)
+  const { shipPath } = useShipContext()
   const { cellSize } = useMapContext()
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      // TODO: a better way to do this?
       const mapClone = clone(map)
 
       npcs.forEach((npc) => {
-        // TODO: a better way to do this?
         const {
           start_time,
           path,
@@ -45,6 +47,12 @@ export const InnerRefreshingMap = ({
         } else {
           mapClone[x][y] = { ...tile, npcs: [npc] }
         }
+      })
+
+      shipPath.forEach((tileInPath, i) => {
+        const { x, y } = tileInPath
+        const mapTile = mapClone[x][y]
+        mapClone[x][y] = { ...mapTile, pathIndex: i }
       })
 
       // TODO: do actual deep equality check here
