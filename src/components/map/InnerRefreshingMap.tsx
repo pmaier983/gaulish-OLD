@@ -29,6 +29,7 @@ export const InnerRefreshingMap = ({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (shipPath.length) return
       // TODO: a better way to do this?
       const mapClone = clone(map)
 
@@ -49,12 +50,6 @@ export const InnerRefreshingMap = ({
         }
       })
 
-      shipPath.forEach((tileInPath, i) => {
-        const { x, y } = tileInPath
-        const mapTile = mapClone[x][y]
-        mapClone[x][y] = { ...mapTile, pathIndex: i }
-      })
-
       // TODO: do actual deep equality check here
       if (JSON.stringify(mapClone) !== JSON.stringify(innerMap)) {
         setInnerMap(mapClone)
@@ -62,6 +57,19 @@ export const InnerRefreshingMap = ({
     }, 1000)
     return () => clearInterval(intervalId)
   })
+
+  useEffect(() => {
+    const mapClone = clone(map)
+    shipPath.forEach((tileInPath, i) => {
+      const { x, y } = tileInPath
+      const mapTile = mapClone[x][y]
+      mapClone[x][y] = { ...mapTile, pathIndex: i }
+    })
+
+    if (JSON.stringify(mapClone) !== JSON.stringify(innerMap)) {
+      setInnerMap(mapClone)
+    }
+  }, [shipPath])
 
   return (
     <AutoSizer>

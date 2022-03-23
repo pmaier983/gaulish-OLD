@@ -69,13 +69,15 @@ export const Map = () => {
   // TODO: is useCallback redundant here?
   const onCellClick = useCallback(
     (cell: Cell) => {
-      if (cell.pathIndex === undefined) {
+      if (cell?.pathIndex === undefined) {
         dispatchShipAction({
-          type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+          type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
           payload: cell.tile,
         })
       } else {
-        dispatchShipAction({ type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH })
+        dispatchShipAction({
+          type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+        })
       }
     },
     [
