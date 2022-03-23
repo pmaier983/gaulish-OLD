@@ -7,6 +7,7 @@ import { GlobalStyle } from "@/utils/globalStyles"
 import { MapProvider } from "@/context/MapProvider"
 import { ShipProvider } from "@/context/ShipProvider"
 import { SocketProvider } from "@/context/SocketProvider"
+import { ErrorProvider } from "@/context/ErrorProvider"
 
 // TODO: setup internationalization
 // TODO: is there a better way to type this (if you need children?)
@@ -16,13 +17,15 @@ const AppWrapper: React.FC = ({ children }) => (
   <ThemeWrapper>
     <GlobalStyle />
     <QueryProvider>
-      <UserProvider>
-        <SocketProvider>
-          <ShipProvider>
-            <MapProvider>{children}</MapProvider>
-          </ShipProvider>
-        </SocketProvider>
-      </UserProvider>
+      <ErrorProvider>
+        <UserProvider>
+          <SocketProvider>
+            <ShipProvider>
+              <MapProvider>{children}</MapProvider>
+            </ShipProvider>
+          </SocketProvider>
+        </UserProvider>
+      </ErrorProvider>
     </QueryProvider>
   </ThemeWrapper>
 )
