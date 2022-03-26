@@ -24,7 +24,7 @@ export const InnerRefreshingMap = ({
 }: InnerRefreshingMapInputs) => {
   // TODO: stop constant re-renders!
   const [innerMap, setInnerMap] = useState(map)
-  const { shipPath } = useShipContext()
+  const { shipPath, selectedShipId } = useShipContext()
   const { cellSize } = useMapContext()
 
   useEffect(() => {
@@ -59,17 +59,19 @@ export const InnerRefreshingMap = ({
   })
 
   useEffect(() => {
+    if (selectedShipId === undefined) return
     const mapClone = clone(map)
+
     shipPath.forEach((tileInPath, i) => {
       const { x, y } = tileInPath
       const mapTile = mapClone[x][y]
       mapClone[x][y] = { ...mapTile, pathIndex: i }
     })
 
-    if (JSON.stringify(mapClone) !== JSON.stringify(innerMap)) {
+    if (JSON.stringify(mapClone) !== JSON.stringify(map)) {
       setInnerMap(mapClone)
     }
-  }, [shipPath])
+  }, [map, selectedShipId, shipPath])
 
   return (
     <AutoSizer>

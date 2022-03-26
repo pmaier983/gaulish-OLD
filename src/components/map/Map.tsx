@@ -10,7 +10,7 @@ import { useShipContext } from "@/context/ShipProvider"
 
 const StyledWrapper = styled.div`
   grid-area: map;
-  padding: 5px 0;
+  display: flex;
 `
 
 export const Map = () => {
