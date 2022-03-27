@@ -7,14 +7,23 @@ import {
   MAX_CELL_SIZE,
   MIN_CELL_SIZE,
 } from "@/utils/constants"
+import type { Map } from "@/components/map/utils"
+import type { City, Npc, Tile } from "@/generated/graphql"
 
 export const MAP_ACTIONS = {
   INCREASE_CELL_SIZE: "INCREASE_CELL_SIZE",
   DECREASE_CELL_SIZE: "DECREASE_CELL_SIZE",
+  SET_MAP: "SET_MAP",
 }
 
 interface MapProviderState {
   cellSize: number
+  mapHeight: number
+  mapWidth: number
+  map: Map
+  cities: City[]
+  tiles: Tile[]
+  npcs: Npc[]
   MAP_ACTIONS: typeof MAP_ACTIONS
 }
 
@@ -26,7 +35,6 @@ interface Action {
 }
 
 const initialState: MapProviderState = {
-  // TODO: is this IIFE bad?
   cellSize: (() => {
     const storedCellSize = window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.CELL_SIZE
@@ -35,6 +43,13 @@ const initialState: MapProviderState = {
     return DEFAULT_CELL_SIZE
   })(),
   MAP_ACTIONS,
+  // TODO: how to make sure this doesn't break anything?
+  mapHeight: 0,
+  mapWidth: 0,
+  map: [[]],
+  cities: [],
+  tiles: [],
+  npcs: [],
 }
 
 interface ContextProps extends MapProviderState {
@@ -53,6 +68,12 @@ export const useMapContext = () => useContext(MapContext)
 
 const reducer = (state: MapProviderState, action: Action) => {
   switch (action.type) {
+    case MAP_ACTIONS.SET_MAP: {
+      return {
+        ...state,
+        ...action.payload,
+      }
+    }
     case MAP_ACTIONS.INCREASE_CELL_SIZE: {
       const newCellSize = Math.min(
         MAX_CELL_SIZE,

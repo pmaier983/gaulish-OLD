@@ -1,13 +1,10 @@
 import type { City, Tile, Npc } from "@/generated/graphql"
 
-type onCellClick = (cell: Cell) => void
-
 interface BuildMap {
   tiles?: Tile[]
   cities?: City[]
   mapWidth: number
   mapHeight: number
-  onClick: onCellClick
 }
 
 export type Cell = {
@@ -15,7 +12,6 @@ export type Cell = {
   city?: City
   npcs?: Npc[]
   pathIndex?: number
-  onClick: onCellClick
 }
 
 export type Map = Cell[][]
@@ -25,13 +21,12 @@ export const buildMap = ({
   cities,
   mapWidth,
   mapHeight,
-  onClick,
 }: BuildMap): Map | undefined => {
   if (!tiles || !cities) return
   // TODO: do this immutably
   const mapArray = Array.from(Array(mapWidth), () => Array(mapHeight))
   tiles.forEach((tile) => {
-    mapArray[tile.x][tile.y] = { tile, onClick }
+    mapArray[tile.x][tile.y] = { tile }
   })
   cities.forEach((city) => {
     const currentMapTile = mapArray[city.tile.x][city.tile.y]
@@ -39,3 +34,5 @@ export const buildMap = ({
   })
   return mapArray
 }
+
+export const checkPath = {}

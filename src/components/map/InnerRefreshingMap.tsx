@@ -4,28 +4,17 @@ import clone from "just-clone"
 
 import { Cell } from "./Cell"
 import { useMapContext } from "@/context/MapProvider"
-import type { Map } from "./utils"
-import type { Npc } from "@/generated/graphql"
 import { useEffect, useState } from "react"
 import { useShipContext } from "@/context/ShipProvider"
 
-interface InnerRefreshingMapInputs {
-  mapWidth: number
-  mapHeight: number
-  map: Map
-  npcs: Npc[]
-}
+let count = 0
 
-export const InnerRefreshingMap = ({
-  mapWidth,
-  mapHeight,
-  map,
-  npcs,
-}: InnerRefreshingMapInputs) => {
+export const InnerRefreshingMap = () => {
+  console.log("-> Render InnerRefreshingMap", count++)
   // TODO: stop constant re-renders!
+  const { cellSize, map, mapHeight, mapWidth, npcs } = useMapContext()
   const [innerMap, setInnerMap] = useState(map)
   const { shipPath, selectedShipId } = useShipContext()
-  const { cellSize } = useMapContext()
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -56,7 +45,7 @@ export const InnerRefreshingMap = ({
       }
     }, 1000)
     return () => clearInterval(intervalId)
-  })
+  }, [innerMap, map, npcs, shipPath.length])
 
   useEffect(() => {
     if (selectedShipId === undefined) return
