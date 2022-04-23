@@ -110,7 +110,7 @@ const reducer = (state: ShipProviderState, action: Action) => {
       }
       return {
         ...state,
-        shipPath: state.shipPath.slice(0, -1),
+        shipPath: shipPathLessLastTile,
       }
     }
     default:

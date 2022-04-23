@@ -1,4 +1,5 @@
 import type { City, Tile, Npc } from "@/generated/graphql"
+import clone from "just-clone"
 
 interface BuildMap {
   tiles?: Tile[]
@@ -7,7 +8,7 @@ interface BuildMap {
   mapHeight: number
 }
 
-export type Cell = {
+export interface Cell {
   tile: Tile
   city?: City
   npcs?: Npc[]
@@ -36,3 +37,49 @@ export const buildMap = ({
 }
 
 export const checkPath = {}
+
+interface UpdateMapProps {
+  npcs: Npc[]
+  map: Map
+  shipPath: Tile[]
+  selectedShipId?: number
+}
+
+export const updateMap = ({
+  npcs,
+  map,
+  shipPath,
+  selectedShipId,
+}: UpdateMapProps) => {
+  const mapClone = clone(map)
+
+  /*
+    Move the npcs around the map
+  */
+  npcs.forEach((npc) => {
+    const {
+      start_time,
+      path,
+      ship_type: { speed },
+    } = npc
+    const timePassed = Date.now() - start_time
+    const tilesMoves = Math.floor(timePassed / speed)
+    const { x, y } = path[tilesMoves % path.length]
+    const tile = mapClone[x][y]
+    if (tile.npcs) {
+      mapClone[x][y] = { ...tile, npcs: [...tile.npcs, npc] }
+    } else {
+      mapClone[x][y] = { ...tile, npcs: [npc] }
+    }
+  })
+
+  if (selectedShipId) {
+    shipPath.forEach((tileInPath, i) => {
+      const { x, y } = tileInPath
+      const mapTile = mapClone[x][y]
+      mapClone[x][y] = { ...mapTile, pathIndex: i }
+    })
+  }
+
+  return mapClone
+}
