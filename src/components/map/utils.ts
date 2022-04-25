@@ -73,7 +73,7 @@ export const updateMap = ({
     }
   })
 
-  if (selectedShipId) {
+  if (selectedShipId !== undefined) {
     shipPath.forEach((tileInPath, i) => {
       const { x, y } = tileInPath
       const mapTile = mapClone[x][y]

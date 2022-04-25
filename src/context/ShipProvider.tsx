@@ -6,11 +6,14 @@ import { gql } from "graphql-request"
 import { useUserContext } from "./UserProvider"
 
 export const SHIP_ACTIONS = {
+  SET_SHIPS: "SET_SHIPS",
+
   TOGGLE_SELECT_SHIP: "TOGGLE_SELECT_SHIP",
   UN_SELECT_SHIP: "UN_SELECT_SHIP",
-  SET_SHIPS: "SET_SHIPS",
+
   ADD_TILE_SHIP_PATH: "ADD_TILE_SHIP_PATH",
   REMOVE_TILE_SHIP_PATH: "REMOVE_TILE_SHIP_PATH",
+  TOGGLE_TILE_SHIP_PATH: "TOGGLE_TILE_SHIP_PATH",
 }
 
 interface ShipProviderState {
@@ -50,7 +53,10 @@ export const ShipContext = createContext<ContextProps>({
 
 export const useShipContext = () => useContext(ShipContext)
 
-const reducer = (state: ShipProviderState, action: Action) => {
+const reducer = (
+  state: ShipProviderState,
+  action: Action
+): ShipProviderState => {
   switch (action.type) {
     case SHIP_ACTIONS.TOGGLE_SELECT_SHIP: {
       const newSelectedShipId = action.payload

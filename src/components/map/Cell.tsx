@@ -1,8 +1,8 @@
 import type { GridChildComponentProps } from "react-window"
 import styled, { css } from "styled-components"
 
-import { TileTypes } from "@/generated/graphql"
-import type { Cell as CellType } from "./utils"
+import { Tile, TileTypes } from "@/generated/graphql"
+import type { Cell as MapCell } from "./utils"
 
 interface StyledWrapperProps {
   type?: TileTypes
@@ -46,33 +46,64 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
   }}
 `
 
+export interface CellType {
+  cell: MapCell
+  onShipPathClick: (tile?: Tile) => void
+}
+
 // TODO: reduce re-renders via memoization!
 // https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
-  const { city, tile, npcs, pathIndex } = data
+  const {
+    cell: { city, tile, npcs, pathIndex },
+    onShipPathClick,
+  } = data
 
+  // if part of a ship path
   if (pathIndex !== undefined) {
     return (
-      <StyledWrapper style={style} type={tile.type}>
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onShipPathClick()}
+      >
         {pathIndex}
       </StyledWrapper>
     )
   }
 
-  if (npcs) {
-    return (
-      <StyledWrapper style={style} type={tile.type}>
-        npc
-      </StyledWrapper>
-    )
-  }
-
+  // if it is a city
   if (city) {
     return (
-      <StyledWrapper style={style} type={tile.type}>
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onShipPathClick(tile)}
+      >
         {city.name}
       </StyledWrapper>
     )
   }
-  return <StyledWrapper style={style} type={tile.type}></StyledWrapper>
+
+  // if its an npc
+  if (npcs) {
+    return (
+      <StyledWrapper
+        style={style}
+        type={tile.type}
+        onClick={() => onShipPathClick(tile)}
+      >
+        {npcs?.at(-1)?.ship_type.name}
+      </StyledWrapper>
+    )
+  }
+
+  // default tile
+  return (
+    <StyledWrapper
+      style={style}
+      type={tile.type}
+      onClick={() => onShipPathClick(tile)}
+    ></StyledWrapper>
+  )
 }

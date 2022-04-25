@@ -33,7 +33,10 @@ export const ErrorContext = createContext<ContextProps>({
 
 export const useErrorContext = () => useContext(ErrorContext)
 
-const reducer = (state: ErrorProviderState, action: Action) => {
+const reducer = (
+  state: ErrorProviderState,
+  action: Action
+): ErrorProviderState => {
   switch (action.type) {
     default:
       console.error("The Reducer Doesn't handle this type")

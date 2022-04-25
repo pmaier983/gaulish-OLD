@@ -3,9 +3,10 @@ import AutoSizer from "react-virtualized-auto-sizer"
 
 import { Cell } from "./Cell"
 import { useMapContext } from "@/context/MapProvider"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useShipContext } from "@/context/ShipProvider"
 import { updateMap } from "./utils"
+import type { Tile } from "@/generated/graphql"
 
 let count = 0
 
@@ -14,7 +15,32 @@ export const InnerRefreshingMap = () => {
   // TODO: stop constant re-renders!
   const { cellSize, map, mapHeight, mapWidth, npcs } = useMapContext()
   const [innerMap, setInnerMap] = useState(map)
-  const { shipPath, selectedShipId } = useShipContext()
+  const { shipPath, selectedShipId, dispatchShipAction, SHIP_ACTIONS } =
+    useShipContext()
+
+  const onShipPathClick = useCallback(
+    (tile?: Tile) => {
+      if (selectedShipId !== undefined) {
+        if (tile) {
+          dispatchShipAction({
+            type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+            payload: tile,
+          })
+        } else {
+          dispatchShipAction({
+            type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+            payload: tile,
+          })
+        }
+      }
+    },
+    [
+      SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+      SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+      dispatchShipAction,
+      selectedShipId,
+    ]
+  )
 
   useEffect(() => {
     /*
@@ -59,7 +85,10 @@ export const InnerRefreshingMap = () => {
           {(props) => (
             <Cell
               {...props}
-              data={innerMap[props.columnIndex][props.rowIndex]}
+              data={{
+                cell: innerMap[props.columnIndex][props.rowIndex],
+                onShipPathClick,
+              }}
             />
           )}
         </VirtualizedGrid>

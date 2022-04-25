@@ -66,7 +66,7 @@ export const MapContext = createContext<ContextProps>({
 
 export const useMapContext = () => useContext(MapContext)
 
-const reducer = (state: MapProviderState, action: Action) => {
+const reducer = (state: MapProviderState, action: Action): MapProviderState => {
   switch (action.type) {
     case MAP_ACTIONS.SET_MAP: {
       return {
