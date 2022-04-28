@@ -58,7 +58,7 @@ export const InnerRefreshingMap = () => {
     /*
       This section controls interval loads
     */
-    const intervalId = setInterval(() => {
+    const refreshIntervalId = setInterval(() => {
       // TODO: a better way to do this?
       newMap()
     }, 1000)
@@ -68,7 +68,7 @@ export const InnerRefreshingMap = () => {
     */
     newMap()
 
-    return () => clearInterval(intervalId)
+    return () => clearInterval(refreshIntervalId)
   }, [innerMap, map, npcs, selectedShipId, shipPath])
 
   return (
