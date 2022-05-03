@@ -8,20 +8,24 @@ const StyledInnerCell = styled.div`
     "header"
     "main"
     "footer";
+  text-align: center;
 `
 
-const StyledHeader = styled.div``
+const StyledHeader = styled.div`
+  text-align: start;
+`
 
 const StyledMain = styled.div`
-  text-align: center;
+  display: flex;
+  justify-content: center;
 `
 
 const StyledFooter = styled.div``
 
 interface InnerCellProps {
-  topLeftText?: string
-  centerText?: string
-  bottomText?: string
+  topLeftText?: React.ReactChild
+  centerText?: React.ReactChild
+  bottomText?: React.ReactChild
 }
 
 export const InnerCell = ({

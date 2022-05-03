@@ -19,7 +19,7 @@ export const SHIP_ACTIONS = {
 interface ShipProviderState {
   SHIP_ACTIONS: typeof SHIP_ACTIONS
   shipPath: Tile[]
-  selectedShipId?: number
+  selectedShip?: Ship
   ships: Ship[]
   getSelectedShip: () => Ship | void
 }
@@ -31,7 +31,6 @@ interface Action {
 }
 
 const initialState: ShipProviderState = {
-  selectedShipId: undefined,
   shipPath: [],
   ships: [],
   SHIP_ACTIONS,
@@ -57,15 +56,16 @@ const reducer = (
   state: ShipProviderState,
   action: Action
 ): ShipProviderState => {
+  console.log(action)
   switch (action.type) {
     case SHIP_ACTIONS.TOGGLE_SELECT_SHIP: {
       const newSelectedShipId = action.payload
 
       // if the ship is already the selected ship, remove it
-      if (newSelectedShipId === state.selectedShipId) {
+      if (newSelectedShipId === state.selectedShip?.ship_id) {
         return {
           ...state,
-          selectedShipId: undefined,
+          selectedShip: undefined,
           shipPath: [],
         }
       }
@@ -77,7 +77,7 @@ const reducer = (
         if (curShip.ship_id === newSelectedShipId) {
           return {
             ...state,
-            selectedShipId: newSelectedShipId,
+            selectedShip: curShip,
             shipPath: [curShip.city.tile],
           }
         }
@@ -89,7 +89,7 @@ const reducer = (
     case SHIP_ACTIONS.UN_SELECT_SHIP: {
       return {
         ...state,
-        selectedShipId: undefined,
+        selectedShip: undefined,
         shipPath: [],
       }
     }
@@ -111,7 +111,7 @@ const reducer = (
         return {
           ...state,
           shipPath: [],
-          selectedShipId: undefined,
+          selectedShip: undefined,
         }
       }
       return {
@@ -130,25 +130,6 @@ export const ShipProvider: React.FC = ({ children }) => {
   const { user } = useUserContext()
   // TODO: test, does passing the value as an object vs. an array effect re-renders?
   const [state, dispatchShipAction] = useReducer(reducer, initialState)
-
-  // TODO: wrap in a memo?
-  const getSelectedShip = (): Ship | void => {
-    if (!state.selectedShipId) {
-      return
-    }
-    const { ships } = state
-    for (let i = 0; i < ships.length; i++) {
-      const curShip = ships[i]
-      if (curShip.ship_id === state.selectedShipId) {
-        return curShip
-      }
-    }
-    dispatchShipAction({
-      type: SHIP_ACTIONS.TOGGLE_SELECT_SHIP,
-      payload: state.selectedShipId,
-    })
-    return
-  }
 
   // TODO: is there a better way to do this?
   const { isLoading } = useQuery({
@@ -199,7 +180,7 @@ export const ShipProvider: React.FC = ({ children }) => {
 
   return (
     <ShipContext.Provider
-      value={{ ...state, dispatchShipAction, SHIP_ACTIONS, getSelectedShip }}
+      value={{ ...state, dispatchShipAction, SHIP_ACTIONS }}
     >
       {children}
     </ShipContext.Provider>

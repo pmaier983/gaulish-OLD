@@ -15,12 +15,13 @@ export const InnerRefreshingMap = () => {
   // TODO: stop constant re-renders!
   const { cellSize, map, mapHeight, mapWidth, npcs } = useMapContext()
   const [innerMap, setInnerMap] = useState(map)
-  const { shipPath, selectedShipId, dispatchShipAction, SHIP_ACTIONS } =
+  const { shipPath, selectedShip, dispatchShipAction, SHIP_ACTIONS } =
     useShipContext()
 
   const onShipPathClick = useCallback(
     (tile?: Tile) => {
-      if (selectedShipId !== undefined) {
+      console.log(tile, selectedShip)
+      if (selectedShip !== undefined) {
         if (tile) {
           dispatchShipAction({
             type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
@@ -38,7 +39,7 @@ export const InnerRefreshingMap = () => {
       SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
       SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
       dispatchShipAction,
-      selectedShipId,
+      selectedShip,
     ]
   )
 
@@ -47,7 +48,7 @@ export const InnerRefreshingMap = () => {
       This function is called on interval and on immediate change
     */
     const newMap = () => {
-      const mapClone = updateMap({ npcs, map, shipPath, selectedShipId })
+      const mapClone = updateMap({ npcs, map, shipPath, selectedShip })
 
       // TODO: do actual deep equality check here
       if (JSON.stringify(mapClone) !== JSON.stringify(innerMap)) {
@@ -59,7 +60,6 @@ export const InnerRefreshingMap = () => {
       This section controls interval loads
     */
     const refreshIntervalId = setInterval(() => {
-      // TODO: a better way to do this?
       newMap()
     }, 1000)
 
@@ -69,7 +69,7 @@ export const InnerRefreshingMap = () => {
     newMap()
 
     return () => clearInterval(refreshIntervalId)
-  }, [innerMap, map, npcs, selectedShipId, shipPath])
+  }, [innerMap, map, npcs, selectedShip, shipPath])
 
   return (
     <AutoSizer>

@@ -10,7 +10,7 @@ const StyledWrapper = styled.div`
 `
 
 export const Ships = () => {
-  const { dispatchShipAction, SHIP_ACTIONS, selectedShipId, ships } =
+  const { dispatchShipAction, SHIP_ACTIONS, selectedShip, ships } =
     useShipContext()
 
   if (!ships?.length) {
@@ -36,8 +36,11 @@ export const Ships = () => {
           <div key={currentShipId}>
             <input
               value="ShipName"
-              type="checkbox"
-              checked={selectedShipId === currentShipId}
+              checked={
+                selectedShip?.ship_id
+                  ? selectedShip?.ship_id === currentShipId
+                  : false
+              }
               onChange={() => {
                 dispatchShipAction({
                   type: SHIP_ACTIONS.TOGGLE_SELECT_SHIP,

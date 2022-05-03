@@ -1,4 +1,4 @@
-import type { City, Tile, Npc } from "@/generated/graphql"
+import type { City, Tile, Npc, Ship } from "@/generated/graphql"
 import clone from "just-clone"
 
 interface BuildMap {
@@ -13,6 +13,7 @@ export interface Cell {
   city?: City
   npcs?: Npc[]
   pathIndex?: number
+  selectedShip?: Ship
 }
 
 export type Map = Cell[][]
@@ -42,14 +43,14 @@ interface UpdateMapProps {
   npcs: Npc[]
   map: Map
   shipPath: Tile[]
-  selectedShipId?: number
+  selectedShip?: Ship
 }
 
 export const updateMap = ({
   npcs,
   map,
   shipPath,
-  selectedShipId,
+  selectedShip,
 }: UpdateMapProps) => {
   const mapClone = clone(map)
 
@@ -73,11 +74,11 @@ export const updateMap = ({
     }
   })
 
-  if (selectedShipId !== undefined) {
+  if (selectedShip !== undefined) {
     shipPath.forEach((tileInPath, i) => {
       const { x, y } = tileInPath
       const mapTile = mapClone[x][y]
-      mapClone[x][y] = { ...mapTile, pathIndex: i }
+      mapClone[x][y] = { ...mapTile, pathIndex: i, selectedShip }
     })
   }
 

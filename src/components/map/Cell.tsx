@@ -3,6 +3,8 @@ import styled, { css } from "styled-components"
 
 import { Tile, TileTypes } from "@/generated/graphql"
 import type { Cell as MapCell } from "./utils"
+import { InnerCell } from "./InnerCell"
+import { getStrongestNpc, upperCaseFirstLetter } from "@/utils/helperFunctions"
 
 interface StyledWrapperProps {
   type?: TileTypes
@@ -46,6 +48,14 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
   }}
 `
 
+const StyledRedDot = styled.div`
+  background-color: red;
+  // TODO: make this a % so cell size doesn't make things wonky
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+`
+
 export interface CellType {
   cell: MapCell
   onShipPathClick: (tile?: Tile) => void
@@ -55,55 +65,45 @@ export interface CellType {
 // https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const {
-    cell: { city, tile, npcs, pathIndex },
+    cell: { city, tile, npcs, pathIndex, selectedShip },
     onShipPathClick,
   } = data
 
-  // if part of a ship path
-  if (pathIndex !== undefined) {
-    return (
-      <StyledWrapper
-        style={style}
-        type={tile.type}
-        onClick={() => onShipPathClick()}
-      >
-        {pathIndex}
-      </StyledWrapper>
-    )
-  }
+  /*
+    Most Important Info
+    ...
+    least important Info
+  */
+  const infoOrder = [
+    pathIndex === 0 ? "Start" : pathIndex?.toString(), // Index Info
+    npcs?.length ? (
+      <>
+        {npcs.map(({ id }) => (
+          <StyledRedDot key={id} />
+        ))}
+      </>
+    ) : undefined, // NPC red dots
+    getStrongestNpc(npcs)?.ship_type.name, // Strong NPC Ship Type Name
+    pathIndex === 0 ? selectedShip?.name : undefined, // Selected Ship Name
+    city?.name, // City Name
+  ].filter(Boolean)
 
-  // if it is a city
-  if (city) {
-    return (
-      <StyledWrapper
-        style={style}
-        type={tile.type}
-        onClick={() => onShipPathClick(tile)}
-      >
-        {city.name}
-      </StyledWrapper>
-    )
-  }
+  const cityNameAbbreviation = upperCaseFirstLetter(city?.name.slice(0, 2))
 
-  // if its an npc
-  if (npcs) {
-    return (
-      <StyledWrapper
-        style={style}
-        type={tile.type}
-        onClick={() => onShipPathClick(tile)}
-      >
-        {npcs?.at(-1)?.ship_type.name}
-      </StyledWrapper>
-    )
-  }
+  const centerText = infoOrder.shift()
+  const bottomText = infoOrder.shift()
 
-  // default tile
   return (
     <StyledWrapper
       style={style}
       type={tile.type}
       onClick={() => onShipPathClick(tile)}
-    ></StyledWrapper>
+    >
+      <InnerCell
+        topLeftText={cityNameAbbreviation}
+        centerText={upperCaseFirstLetter(centerText)}
+        bottomText={bottomText}
+      />
+    </StyledWrapper>
   )
 }
