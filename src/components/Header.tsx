@@ -23,8 +23,8 @@ const LowerButtonContainer = styled.div`
 `
 
 export const Header = () => {
-  const { dispatchMapAction, MAP_ACTIONS } = useMapContext()
-  const { dispatchShipAction, SHIP_ACTIONS, selectedShipId } = useShipContext()
+  const { dispatchMapAction, MAP_ACTIONS, isPaused } = useMapContext()
+  const { dispatchShipAction, SHIP_ACTIONS, selectedShip } = useShipContext()
   const { logoutUser } = useUserContext()
 
   return (
@@ -46,10 +46,17 @@ export const Header = () => {
             >
               Decrease Cell Size
             </button>
+            <button
+              onClick={() =>
+                dispatchMapAction({ type: MAP_ACTIONS.TOGGLE_MAP_PAUSE })
+              }
+            >
+              {isPaused ? "Un-Pause" : "Pause"}
+            </button>
           </div>
           <button onClick={logoutUser}>Logout</button>
         </UpperButtonContainer>
-        {selectedShipId && (
+        {selectedShip && (
           <LowerButtonContainer>
             <button
               onClick={() =>

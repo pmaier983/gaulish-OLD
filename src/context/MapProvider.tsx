@@ -14,10 +14,12 @@ export const MAP_ACTIONS = {
   INCREASE_CELL_SIZE: "INCREASE_CELL_SIZE",
   DECREASE_CELL_SIZE: "DECREASE_CELL_SIZE",
   SET_MAP: "SET_MAP",
+  TOGGLE_MAP_PAUSE: "TOGGLE_MAP_PAUSE",
 }
 
 interface MapProviderState {
   cellSize: number
+  isPaused: boolean
   mapHeight: number
   mapWidth: number
   map: Map
@@ -42,6 +44,7 @@ const initialState: MapProviderState = {
     if (storedCellSize) return parseInt(storedCellSize, 10)
     return DEFAULT_CELL_SIZE
   })(),
+  isPaused: false,
   MAP_ACTIONS,
   // TODO: how to make sure this doesn't break anything?
   mapHeight: 0,
@@ -100,6 +103,12 @@ const reducer = (state: MapProviderState, action: Action): MapProviderState => {
       return {
         ...state,
         cellSize: newCellSize,
+      }
+    }
+    case MAP_ACTIONS.TOGGLE_MAP_PAUSE: {
+      return {
+        ...state,
+        isPaused: !state.isPaused,
       }
     }
     default:
