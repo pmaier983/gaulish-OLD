@@ -84,3 +84,22 @@ export const updateMap = ({
 
   return mapClone
 }
+
+export enum SPECIAL_TILE_TYPE {
+  START = "START",
+  PATH = "PATH",
+  END = "END",
+}
+
+export const getSpecialCellType = ({
+  pathIndex,
+  city,
+}: {
+  pathIndex?: number
+  city?: City
+}) => {
+  if (typeof pathIndex !== "number") return
+  if (pathIndex === 0) return SPECIAL_TILE_TYPE.START
+  if (city) return SPECIAL_TILE_TYPE.END
+  return SPECIAL_TILE_TYPE.PATH
+}

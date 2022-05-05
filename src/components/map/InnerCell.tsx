@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 const StyledInnerCell = styled.div`
   display: grid;
@@ -8,39 +8,52 @@ const StyledInnerCell = styled.div`
     "header"
     "main"
     "footer";
-  text-align: center;
 `
 
-const StyledHeader = styled.div`
-  text-align: start;
-`
-
-const StyledMain = styled.div`
-  display: flex;
-  justify-content: center;
-`
-
-const StyledFooter = styled.div``
-
-interface InnerCellProps {
-  topLeftText?: React.ReactChild
-  centerText?: React.ReactChild
-  bottomText?: React.ReactChild
+interface StyledTextProps {
+  isText: boolean
 }
 
-export const InnerCell = ({
-  topLeftText,
-  centerText,
-  bottomText,
-}: InnerCellProps) => {
+const StyledText = styled.div<StyledTextProps>`
+  ${({ isText }) => {
+    if (isText) {
+      return css`
+        background-color: white;
+        border-radius: 10px;
+        padding: 0 5px;
+        height: min-content;
+      `
+    }
+  }}
+`
+
+const StyledHeader = styled(StyledText)`
+  justify-self: start;
+`
+
+const StyledMain = styled(StyledText)`
+  justify-self: center;
+`
+
+const StyledFooter = styled(StyledText)`
+  justify-self: center;
+`
+
+interface InnerCellProps {
+  header?: React.ReactChild
+  main?: React.ReactChild
+  footer?: React.ReactChild
+}
+
+export const InnerCell = ({ header, main, footer }: InnerCellProps) => {
   // dont waste time rendering div's if not needed.
-  if (!topLeftText && !centerText && !bottomText) return null
+  if (!header && !main && !footer) return null
 
   return (
     <StyledInnerCell>
-      <StyledHeader>{topLeftText}</StyledHeader>
-      <StyledMain>{centerText}</StyledMain>
-      <StyledFooter>{bottomText}</StyledFooter>
+      <StyledHeader isText={typeof header === "string"}>{header}</StyledHeader>
+      <StyledMain isText={typeof main === "string"}>{main}</StyledMain>
+      <StyledFooter isText={typeof footer === "string"}>{footer}</StyledFooter>
     </StyledInnerCell>
   )
 }
