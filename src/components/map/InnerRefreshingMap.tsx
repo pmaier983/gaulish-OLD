@@ -13,7 +13,7 @@ let count = 0
 export const InnerRefreshingMap = () => {
   console.log("-> Render InnerRefreshingMap", count++)
   // TODO: stop constant re-renders!
-  const { cellSize, map, mapHeight, mapWidth, npcs } = useMapContext()
+  const { cellSize, map, mapHeight, mapWidth, npcs, isPaused } = useMapContext()
   const [innerMap, setInnerMap] = useState(map)
   const { shipPath, selectedShip, dispatchShipAction, SHIP_ACTIONS } =
     useShipContext()
@@ -44,6 +44,7 @@ export const InnerRefreshingMap = () => {
   )
 
   useEffect(() => {
+    if (isPaused) return
     /*
       This function is called on interval and on immediate change
     */
@@ -69,7 +70,7 @@ export const InnerRefreshingMap = () => {
     newMap()
 
     return () => clearInterval(refreshIntervalId)
-  }, [innerMap, map, npcs, selectedShip, shipPath])
+  }, [innerMap, isPaused, map, npcs, selectedShip, shipPath])
 
   return (
     <AutoSizer>

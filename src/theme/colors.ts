@@ -8,6 +8,8 @@ const colors = {
   red: "hsl(357deg, 73%, 50%)",
   grey: "hsl(46deg, 1%, 68%)",
   blue: "hsl(214deg, 35%, 37%)",
+  goGreen: "hsl(148deg, 92%, 40%)",
+  stopRed: "hsl(359deg, 92%, 40%)",
 }
 
 export { colors }
