@@ -5,7 +5,7 @@ import { Cell } from "./Cell"
 import { useMapContext } from "@/context/MapProvider"
 import { useCallback, useEffect, useState } from "react"
 import { useShipContext } from "@/context/ShipProvider"
-import { updateMap } from "./utils"
+import { doesPathIncludeTile, updateMap } from "./utils"
 import type { Tile } from "@/generated/graphql"
 
 let count = 0
@@ -19,17 +19,16 @@ export const InnerRefreshingMap = () => {
     useShipContext()
 
   const onShipPathClick = useCallback(
-    (tile?: Tile) => {
-      console.log(tile, selectedShip)
+    (tile: Tile) => {
       if (selectedShip !== undefined) {
-        if (tile) {
+        if (doesPathIncludeTile({ path: shipPath, tile })) {
           dispatchShipAction({
-            type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+            type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
             payload: tile,
           })
         } else {
           dispatchShipAction({
-            type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+            type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
             payload: tile,
           })
         }
@@ -40,6 +39,7 @@ export const InnerRefreshingMap = () => {
       SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
       dispatchShipAction,
       selectedShip,
+      shipPath,
     ]
   )
 

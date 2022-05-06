@@ -103,3 +103,15 @@ export const getSpecialCellType = ({
   if (city) return SPECIAL_TILE_TYPE.END
   return SPECIAL_TILE_TYPE.PATH
 }
+
+export const doesPathIncludeTile = ({
+  path,
+  tile,
+}: {
+  path: Tile[]
+  tile: Tile
+}) =>
+  path.reduce((acc, cur) => {
+    if (acc) return acc
+    return tile.x === cur.x && tile.y === cur.y
+  }, false)

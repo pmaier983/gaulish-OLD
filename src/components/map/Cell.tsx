@@ -124,7 +124,7 @@ const StyledRedDot = styled.div`
 
 export interface CellType {
   cell: MapCell
-  onShipPathClick: (tile?: Tile) => void
+  onShipPathClick: (tile: Tile) => void
 }
 
 // TODO: reduce re-renders via memoization!

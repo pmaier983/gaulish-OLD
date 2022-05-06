@@ -1,13 +1,11 @@
-const hslFromString = (hslString: string): [number, number, number] => {
-  console.log(hslString)
-  return hslString
-    .split(",")
+const hslFromString = (hslString: string): [number, number, number] =>
+  hslString
+    ?.split(",")
     .map((section) => parseInt(section.replace(/\D/g, ""), 10)) as [
     number,
     number,
     number
   ]
-}
 
 const numbersToHsl = (hue: number, saturation: number, lightness: number) =>
   `hsl(${hue}deg, ${saturation}%, ${lightness}%)`
