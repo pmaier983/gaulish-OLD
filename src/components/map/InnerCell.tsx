@@ -24,6 +24,7 @@ const StyledText = styled.div<StyledTextProps>`
         height: min-content;
       `
     }
+    return css``
   }}
 `
 

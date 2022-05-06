@@ -78,14 +78,8 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
       }
       case SPECIAL_TILE_TYPE.PATH: {
         return css`
-          background-size: 10px 10px;
-          background-image: repeating-linear-gradient(
-            to right,
-            ${colors.grey},
-            ${colors.grey} 1px,
-            transparent 1px,
-            transparent
-          );
+          box-shadow: inset 0px 0px 15px
+            ${colors.hsl_add_lightness({ color: colors.blue, amount: -25 })};
         `
       }
       case SPECIAL_TILE_TYPE.END: {
