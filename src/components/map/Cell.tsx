@@ -124,7 +124,8 @@ const StyledRedDot = styled.div`
 
 export interface CellType {
   cell: MapCell
-  onShipPathClick: (tile: Tile) => void
+  onClick: (tile: Tile) => void
+  onContextMenu: () => void
 }
 
 // TODO: reduce re-renders via memoization!
@@ -132,7 +133,8 @@ export interface CellType {
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const {
     cell: { city, tile, npcs, pathIndex, selectedShip },
-    onShipPathClick,
+    onClick,
+    onContextMenu,
   } = data
 
   const isStartOfPath = pathIndex === 0
@@ -166,7 +168,11 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
     <StyledWrapper
       style={style}
       type={tile.type}
-      onClick={() => onShipPathClick(tile)}
+      onClick={() => onClick(tile)}
+      onContextMenu={(e) => {
+        e.preventDefault()
+        onContextMenu()
+      }}
       specialType={getSpecialCellType({ city, pathIndex })}
     >
       <InnerCell

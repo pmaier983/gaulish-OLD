@@ -5,7 +5,7 @@ import { Cell } from "./Cell"
 import { useMapContext } from "@/context/MapProvider"
 import { useCallback, useEffect, useState } from "react"
 import { useShipContext } from "@/context/ShipProvider"
-import { doesPathIncludeTile, updateMap } from "./utils"
+import { updateMap } from "./utils"
 import type { Tile } from "@/generated/graphql"
 
 let count = 0
@@ -20,28 +20,21 @@ export const InnerRefreshingMap = () => {
 
   const onShipPathClick = useCallback(
     (tile: Tile) => {
-      if (selectedShip !== undefined) {
-        if (doesPathIncludeTile({ path: shipPath, tile })) {
-          dispatchShipAction({
-            type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
-            payload: tile,
-          })
-        } else {
-          dispatchShipAction({
-            type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
-            payload: tile,
-          })
-        }
-      }
+      if (selectedShip === undefined) return
+      dispatchShipAction({
+        type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+        payload: tile,
+      })
     },
-    [
-      SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
-      SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
-      dispatchShipAction,
-      selectedShip,
-      shipPath,
-    ]
+    [SHIP_ACTIONS.ADD_TILE_SHIP_PATH, dispatchShipAction, selectedShip]
   )
+
+  const onShipPathRightClick = useCallback(() => {
+    if (selectedShip === undefined) return
+    dispatchShipAction({
+      type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,
+    })
+  }, [SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH, dispatchShipAction, selectedShip])
 
   useEffect(() => {
     if (isPaused) return
@@ -88,7 +81,8 @@ export const InnerRefreshingMap = () => {
               {...props}
               data={{
                 cell: innerMap[props.columnIndex][props.rowIndex],
-                onShipPathClick,
+                onClick: onShipPathClick,
+                onContextMenu: onShipPathRightClick,
               }}
             />
           )}
