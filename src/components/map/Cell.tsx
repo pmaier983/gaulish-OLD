@@ -2,9 +2,14 @@ import type { GridChildComponentProps } from "react-window"
 import styled, { css } from "styled-components"
 
 import { Tile, TileTypes } from "@/generated/graphql"
-import { Cell as MapCell, getSpecialCellType, SPECIAL_TILE_TYPE } from "./utils"
+import type { Cell as MapCell } from "./utils"
 import { InnerCell } from "./InnerCell"
 import { getStrongestNpc, upperCaseFirstLetter } from "@/utils/helperFunctions"
+
+export enum SPECIAL_TILE_TYPE {
+  START = "START",
+  PATH = "PATH",
+}
 
 interface StyledWrapperProps {
   type?: TileTypes
@@ -82,28 +87,28 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
             ${colors.hsl_add_lightness({ color: colors.blue, amount: -25 })};
         `
       }
-      case SPECIAL_TILE_TYPE.END: {
-        return css`
-          background-image: repeating-linear-gradient(
-              45deg,
-              ${colors.stopRed} 25%,
-              transparent 25%,
-              transparent 75%,
-              ${colors.stopRed} 75%,
-              ${colors.stopRed}
-            ),
-            repeating-linear-gradient(
-              45deg,
-              ${colors.stopRed} 25%,
-              transparent 25%,
-              transparent 75%,
-              ${colors.stopRed} 75%,
-              ${colors.stopRed}
-            );
-          background-position: 0 0, 10px 10px;
-          background-size: 20px 20px;
-        `
-      }
+      // case SPECIAL_TILE_TYPE.END: {
+      //   return css`
+      //     background-image: repeating-linear-gradient(
+      //         45deg,
+      //         ${colors.stopRed} 25%,
+      //         transparent 25%,
+      //         transparent 75%,
+      //         ${colors.stopRed} 75%,
+      //         ${colors.stopRed}
+      //       ),
+      //       repeating-linear-gradient(
+      //         45deg,
+      //         ${colors.stopRed} 25%,
+      //         transparent 25%,
+      //         transparent 75%,
+      //         ${colors.stopRed} 75%,
+      //         ${colors.stopRed}
+      //       );
+      //     background-position: 0 0, 10px 10px;
+      //     background-size: 20px 20px;
+      //   `
+      // }
       default:
         console.error(
           "This cell Special Type is not supported. SpecialType:",
@@ -132,12 +137,12 @@ export interface CellType {
 // https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const {
-    cell: { city, tile, npcs, pathIndex, selectedShip },
+    cell: { city, tile, npcs, pathIndexArray, selectedShip },
     onClick,
     onContextMenu,
   } = data
 
-  const isStartOfPath = pathIndex === 0
+  const isStartOfPath = pathIndexArray?.includes(0)
 
   // TODO: ship names should have a specific "style"
   /*
@@ -146,7 +151,7 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
     least important Info
   */
   const infoOrder = [
-    isStartOfPath ? "Start" : pathIndex?.toString(), // Index Info
+    isStartOfPath ? "Start" : pathIndexArray?.toString(), // Index Info
     npcs?.length ? (
       <>
         {npcs.map(({ id }) => (
@@ -173,7 +178,12 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
         e.preventDefault()
         onContextMenu()
       }}
-      specialType={getSpecialCellType({ city, pathIndex })}
+      specialType={
+        pathIndexArray &&
+        (pathIndexArray?.includes(0)
+          ? SPECIAL_TILE_TYPE.START
+          : SPECIAL_TILE_TYPE.PATH)
+      }
     >
       <InnerCell
         header={cityNameAbbreviation}

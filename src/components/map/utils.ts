@@ -12,7 +12,7 @@ export interface Cell {
   tile: Tile
   city?: City
   npcs?: Npc[]
-  pathIndex?: number
+  pathIndexArray?: number[]
   selectedShip?: Ship
 }
 
@@ -78,30 +78,14 @@ export const updateMap = ({
     shipPath.forEach((tileInPath, i) => {
       const { x, y } = tileInPath
       const mapTile = mapClone[x][y]
-      mapClone[x][y] = { ...mapTile, pathIndex: i, selectedShip }
+      const pathIndexArray = mapTile?.pathIndexArray
+        ? [...mapTile?.pathIndexArray, i]
+        : [i]
+      mapClone[x][y] = { ...mapTile, pathIndexArray, selectedShip }
     })
   }
 
   return mapClone
-}
-
-export enum SPECIAL_TILE_TYPE {
-  START = "START",
-  PATH = "PATH",
-  END = "END",
-}
-
-export const getSpecialCellType = ({
-  pathIndex,
-  city,
-}: {
-  pathIndex?: number
-  city?: City
-}) => {
-  if (typeof pathIndex !== "number") return
-  if (pathIndex === 0) return SPECIAL_TILE_TYPE.START
-  if (city) return SPECIAL_TILE_TYPE.END
-  return SPECIAL_TILE_TYPE.PATH
 }
 
 export const doesPathIncludeTile = ({
