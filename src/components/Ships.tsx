@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components"
-import { MixedCheckbox } from "@reach/checkbox"
 
 import { useShipContext } from "@/context/ShipProvider"
 
@@ -35,8 +34,9 @@ export const Ships = () => {
         const currentShipId = ship?.ship_id
         return (
           <div key={currentShipId}>
-            <MixedCheckbox
+            <input
               value="ShipName"
+              type="checkbox"
               checked={selectedShipId === currentShipId}
               onChange={() => {
                 dispatchShipAction({
