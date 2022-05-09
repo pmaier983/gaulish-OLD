@@ -12,10 +12,10 @@
     "build": "snowpack build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "eslint . --fix",
-    "test": "web-test-runner \"src/**/*.test.tsx\"",
     "generate-types": "graphql-codegen --config codegen.yml && npm run lint",
     "deploy:aws": "npm run build && npm run export && dotenv -- cross-var aws s3 cp --recursive ./out %S3_BUCKET_NAME%",
-    "invalidate:aws": "dotenv -- cross-var aws cloudfront create-invalidation --distribution-id %CLOUDFRONT_DISTRIBUTION_ID% --paths \"/*\""
+    "invalidate:aws": "dotenv -- cross-var aws cloudfront create-invalidation --distribution-id %CLOUDFRONT_DISTRIBUTION_ID% --paths \"/*\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "graphql-request": "^4.2.0",
@@ -58,21 +58,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^12.4.1",
+    "husky": "^8.0.0",
     "prettier": "^2.6.2",
     "snowpack": "^3.8.8",
     "typescript": "^4.6.4",
     "typescript-plugin-styled-components": "^2.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{tsx,ts,js,jsx}": [
-      "npm run lint"
-    ]
   }
 }
