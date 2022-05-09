@@ -8,6 +8,7 @@ export const ERROR_ACTIONS = {
 interface ErrorProviderState {
   ERROR_ACTIONS: typeof ERROR_ACTIONS
   error: React.FC | null
+  clearError: () => void
 }
 
 interface Action {
@@ -19,6 +20,8 @@ interface Action {
 const initialState: ErrorProviderState = {
   ERROR_ACTIONS,
   error: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  clearError: () => {},
 }
 
 interface ContextProps extends ErrorProviderState {
@@ -38,6 +41,18 @@ const reducer = (
   action: Action
 ): ErrorProviderState => {
   switch (action.type) {
+    case ERROR_ACTIONS.SET_ERROR: {
+      return {
+        ...state,
+        error: action.payload,
+      }
+    }
+    case ERROR_ACTIONS.CLEAR_ERROR: {
+      return {
+        ...state,
+        error: null,
+      }
+    }
     default:
       console.error("The Reducer Doesn't handle this type")
       return state
@@ -48,9 +63,14 @@ const reducer = (
 export const ErrorProvider: React.FC = ({ children }) => {
   // TODO: test, does passing the value as an object vs. an array effect re-renders?
   const [state, dispatchErrorAction] = useReducer(reducer, initialState)
+
+  const clearError = () => {
+    dispatchErrorAction({ type: ERROR_ACTIONS.CLEAR_ERROR })
+  }
+
   return (
     <ErrorContext.Provider
-      value={{ ...state, dispatchErrorAction, ERROR_ACTIONS }}
+      value={{ ...state, dispatchErrorAction, clearError, ERROR_ACTIONS }}
     >
       {children}
     </ErrorContext.Provider>
