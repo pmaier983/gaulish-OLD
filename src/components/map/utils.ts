@@ -14,6 +14,8 @@ export interface Cell {
   npcs?: Npc[]
   pathIndexArray?: number[]
   selectedShip?: Ship
+  // TODO: This feels bad...
+  isEndOfPath: boolean
 }
 
 export type Map = Cell[][]
@@ -81,7 +83,12 @@ export const updateMap = ({
       const pathIndexArray = mapTile?.pathIndexArray
         ? [...mapTile?.pathIndexArray, i]
         : [i]
-      mapClone[x][y] = { ...mapTile, pathIndexArray, selectedShip }
+      mapClone[x][y] = {
+        ...mapTile,
+        pathIndexArray,
+        selectedShip,
+        isEndOfPath: shipPath.length - 1 === i,
+      }
     })
   }
 

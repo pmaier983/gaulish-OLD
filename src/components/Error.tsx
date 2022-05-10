@@ -19,11 +19,12 @@ export const Error = () => {
 
   // Clear the error after 10s
   useEffect(() => {
+    if (!error) return
     const timeoutId = setTimeout(() => {
       clearError()
     }, 10000)
     return () => clearTimeout(timeoutId)
-  }, [clearError])
+  }, [clearError, error])
 
   return <StyledWrapper>{error}</StyledWrapper>
 }

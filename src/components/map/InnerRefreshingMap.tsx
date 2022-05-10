@@ -1,12 +1,14 @@
+import { useCallback, useEffect, useState } from "react"
 import { FixedSizeGrid as VirtualizedGrid } from "react-window"
 import AutoSizer from "react-virtualized-auto-sizer"
 
-import { Cell } from "./Cell"
-import { useMapContext } from "@/context/MapProvider"
-import { useCallback, useEffect, useState } from "react"
-import { useShipContext } from "@/context/ShipProvider"
-import { updateMap } from "./utils"
 import type { Tile } from "@/generated/graphql"
+import { useErrorContext } from "@/context/ErrorProvider"
+import { useShipContext } from "@/context/ShipProvider"
+import { useMapContext } from "@/context/MapProvider"
+
+import { Cell } from "./Cell"
+import { updateMap } from "./utils"
 
 let count = 0
 
@@ -14,22 +16,41 @@ export const InnerRefreshingMap = () => {
   console.log("-> Render InnerRefreshingMap", count++)
   // TODO: stop constant re-renders!
   const { cellSize, map, mapHeight, mapWidth, npcs, isPaused } = useMapContext()
+  const { dispatchErrorAction, ERROR_ACTIONS } = useErrorContext()
   const [innerMap, setInnerMap] = useState(map)
   const { shipPath, selectedShip, dispatchShipAction, SHIP_ACTIONS } =
     useShipContext()
 
   const onShipPathClick = useCallback(
     (tile: Tile) => {
+      // do nothing if no ship is selected
       if (selectedShip === undefined) return
+      // you cannot add the same tile you've already added
+      const lastTileInPath = shipPath.at(-1)
+      if (lastTileInPath?.x === tile.x && lastTileInPath?.y === tile.y) {
+        dispatchErrorAction({
+          type: ERROR_ACTIONS.SET_ERROR,
+          payload: "Your ship must move at least 1 tile.",
+        })
+        return
+      }
       dispatchShipAction({
         type: SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
         payload: tile,
       })
     },
-    [SHIP_ACTIONS.ADD_TILE_SHIP_PATH, dispatchShipAction, selectedShip]
+    [
+      ERROR_ACTIONS.SET_ERROR,
+      SHIP_ACTIONS.ADD_TILE_SHIP_PATH,
+      dispatchErrorAction,
+      dispatchShipAction,
+      selectedShip,
+      shipPath,
+    ]
   )
 
   const onShipPathRightClick = useCallback(() => {
+    // do nothing if no ship is selected
     if (selectedShip === undefined) return
     dispatchShipAction({
       type: SHIP_ACTIONS.REMOVE_TILE_SHIP_PATH,

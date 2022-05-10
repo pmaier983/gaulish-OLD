@@ -11,6 +11,8 @@ import { InnerRefreshingMap } from "./InnerRefreshingMap"
 const StyledWrapper = styled.div`
   grid-area: map;
   display: flex;
+  // TODO: why is this needed?
+  padding-top: 8px;
 `
 
 export const Map = () => {
