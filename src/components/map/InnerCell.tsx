@@ -3,7 +3,7 @@ import styled, { css } from "styled-components"
 const StyledInnerCell = styled.div`
   display: grid;
   height: 100%;
-  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-rows: 30% 40% 30%;
   grid-template-areas:
     "header"
     "main"
@@ -21,7 +21,6 @@ const StyledText = styled.div<StyledTextProps>`
         background-color: white;
         border-radius: 10px;
         padding: 0 5px;
-        height: min-content;
       `
     }
     return css``
@@ -34,6 +33,7 @@ const StyledHeader = styled(StyledText)`
 
 const StyledMain = styled(StyledText)`
   justify-self: center;
+  align-self: center;
 `
 
 const StyledFooter = styled(StyledText)`

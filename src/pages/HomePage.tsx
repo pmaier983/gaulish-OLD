@@ -5,8 +5,8 @@ import { Header, Footer, SidebarLeft, Map } from "@/components"
 const StyledWrapper = styled.div`
   display: grid;
   height: 100%;
-  grid-template-columns: 200px 1fr 200px;
-  grid-template-rows: 100px 1fr 200px;
+  grid-template-columns: 200px auto 200px;
+  grid-template-rows: 100px auto 200px;
   grid-template-areas:
     "header header header"
     "sidebarLeft map map"

@@ -9,6 +9,7 @@ import { getStrongestNpc, upperCaseFirstLetter } from "@/utils/helperFunctions"
 export enum SPECIAL_TILE_TYPE {
   START = "START",
   PATH = "PATH",
+  END = "END",
 }
 
 interface StyledWrapperProps {
@@ -20,6 +21,8 @@ interface StyledWrapperProps {
 const StyledWrapper = styled.div<StyledWrapperProps>`
   ${({ theme: { colors } }) => {
     return css`
+      // TODO: remove the weird background shift caused by this border
+      border: 3px solid transparent;
       &:hover {
         border: 3px solid ${colors.alert};
       }
@@ -87,28 +90,28 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
             ${colors.hsl_add_lightness({ color: colors.blue, amount: -25 })};
         `
       }
-      // case SPECIAL_TILE_TYPE.END: {
-      //   return css`
-      //     background-image: repeating-linear-gradient(
-      //         45deg,
-      //         ${colors.stopRed} 25%,
-      //         transparent 25%,
-      //         transparent 75%,
-      //         ${colors.stopRed} 75%,
-      //         ${colors.stopRed}
-      //       ),
-      //       repeating-linear-gradient(
-      //         45deg,
-      //         ${colors.stopRed} 25%,
-      //         transparent 25%,
-      //         transparent 75%,
-      //         ${colors.stopRed} 75%,
-      //         ${colors.stopRed}
-      //       );
-      //     background-position: 0 0, 10px 10px;
-      //     background-size: 20px 20px;
-      //   `
-      // }
+      case SPECIAL_TILE_TYPE.END: {
+        return css`
+          background-image: repeating-linear-gradient(
+              45deg,
+              ${colors.stopRed} 25%,
+              transparent 25%,
+              transparent 75%,
+              ${colors.stopRed} 75%,
+              ${colors.stopRed}
+            ),
+            repeating-linear-gradient(
+              45deg,
+              ${colors.stopRed} 25%,
+              transparent 25%,
+              transparent 75%,
+              ${colors.stopRed} 75%,
+              ${colors.stopRed}
+            );
+          background-position: 0 0, 10px 10px;
+          background-size: 20px 20px;
+        `
+      }
       default:
         console.error(
           "This cell Special Type is not supported. SpecialType:",
@@ -137,12 +140,14 @@ export interface CellType {
 // https://react-window.vercel.app/#/examples/list/memoized-list-items
 export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const {
-    cell: { city, tile, npcs, pathIndexArray, selectedShip },
+    cell: { city, tile, npcs, pathIndexArray, selectedShip, isEndOfPath },
     onClick,
     onContextMenu,
   } = data
 
   const isStartOfPath = pathIndexArray?.includes(0)
+
+  console.log({ isStartOfPath, isEndOfPath })
 
   // TODO: ship names should have a specific "style"
   /*
@@ -151,6 +156,7 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
     least important Info
   */
   const infoOrder = [
+    !isStartOfPath && isEndOfPath ? "End" : undefined,
     isStartOfPath ? "Start" : pathIndexArray?.toString(), // Index Info
     npcs?.length ? (
       <>
@@ -169,6 +175,14 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
   const centerText = infoOrder.shift()
   const bottomText = infoOrder.shift()
 
+  // TODO: what is wrong with this IIFE (is it bad for some reason?)
+  const cellType = (() => {
+    if (!selectedShip) return
+    if (isStartOfPath) return SPECIAL_TILE_TYPE.START
+    if (isEndOfPath) return SPECIAL_TILE_TYPE.END
+    return SPECIAL_TILE_TYPE.PATH
+  })()
+
   return (
     <StyledWrapper
       style={style}
@@ -178,12 +192,7 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
         e.preventDefault()
         onContextMenu()
       }}
-      specialType={
-        pathIndexArray &&
-        (pathIndexArray?.includes(0)
-          ? SPECIAL_TILE_TYPE.START
-          : SPECIAL_TILE_TYPE.PATH)
-      }
+      specialType={cellType}
     >
       <InnerCell
         header={cityNameAbbreviation}

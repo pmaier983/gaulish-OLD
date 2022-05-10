@@ -35,7 +35,7 @@ export const Ships = () => {
         return (
           <div key={currentShipId}>
             <input
-              value="ShipName"
+              type="checkbox"
               checked={
                 selectedShip?.ship_id
                   ? selectedShip?.ship_id === currentShipId
