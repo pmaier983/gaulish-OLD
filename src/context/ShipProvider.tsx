@@ -56,7 +56,6 @@ const reducer = (
   state: ShipProviderState,
   action: Action
 ): ShipProviderState => {
-  console.log(action)
   switch (action.type) {
     case SHIP_ACTIONS.TOGGLE_SELECT_SHIP: {
       const newSelectedShipId = action.payload

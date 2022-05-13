@@ -147,8 +147,6 @@ export const Cell = ({ style, data }: GridChildComponentProps<CellType>) => {
 
   const isStartOfPath = pathIndexArray?.includes(0)
 
-  console.log({ isStartOfPath, isEndOfPath })
-
   // TODO: ship names should have a specific "style"
   /*
     Most Important Info
