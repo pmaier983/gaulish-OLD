@@ -86,6 +86,7 @@ const StyledWrapper = styled.div<StyledWrapperProps>`
       }
       case SPECIAL_TILE_TYPE.PATH: {
         return css`
+          border: none;
           box-shadow: inset 0px 0px 15px
             ${colors.hsl_add_lightness({ color: colors.blue, amount: -25 })};
         `

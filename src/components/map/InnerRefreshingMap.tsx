@@ -27,10 +27,28 @@ export const InnerRefreshingMap = () => {
       if (selectedShip === undefined) return
       // you cannot add the same tile you've already added
       const lastTileInPath = shipPath.at(-1)
-      if (lastTileInPath?.x === tile.x && lastTileInPath?.y === tile.y) {
+      if (!lastTileInPath) {
+        dispatchErrorAction({
+          type: ERROR_ACTIONS.SET_ERROR,
+          payload: "It seems there is no path to add to!?",
+        })
+        return
+      }
+      if (lastTileInPath.x === tile.x && lastTileInPath.y === tile.y) {
         dispatchErrorAction({
           type: ERROR_ACTIONS.SET_ERROR,
           payload: "Your ship must move at least 1 tile.",
+        })
+        return
+      }
+      if (
+        Math.abs(lastTileInPath.x - tile.x) +
+          Math.abs(lastTileInPath.y - tile.y) >
+        1
+      ) {
+        dispatchErrorAction({
+          type: ERROR_ACTIONS.SET_ERROR,
+          payload: "Your move must be adjacent to the end of the current path.",
         })
         return
       }
