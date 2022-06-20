@@ -21,7 +21,6 @@ interface ShipProviderState {
   shipPath: Tile[]
   selectedShip?: Ship
   ships: Ship[]
-  getSelectedShip: () => Ship | void
 }
 
 interface Action {
@@ -34,8 +33,6 @@ const initialState: ShipProviderState = {
   shipPath: [],
   ships: [],
   SHIP_ACTIONS,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  getSelectedShip: () => {},
 }
 
 interface ContextProps extends ShipProviderState {
