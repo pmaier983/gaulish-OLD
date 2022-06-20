@@ -23,30 +23,38 @@ const LowerButtonContainer = styled.div`
   gap: 40px;
 `
 
+// TODO: properly handle Cell Size interactions
+const disableSizeToggles = true
+
 export const Header = () => {
   const { dispatchMapAction, MAP_ACTIONS, isPaused } = useMapContext()
   const { clearError } = useErrorContext()
-  const { dispatchShipAction, SHIP_ACTIONS, selectedShip } = useShipContext()
+  const { dispatchShipAction, SHIP_ACTIONS, selectedShip, shipPath } =
+    useShipContext()
   const { logoutUser } = useUserContext()
 
   return (
     <StyledWrapper>
       <UpperButtonContainer>
         <div>
-          <button
-            onClick={() =>
-              dispatchMapAction({ type: MAP_ACTIONS.INCREASE_CELL_SIZE })
-            }
-          >
-            Increase Cell Size
-          </button>
-          <button
-            onClick={() =>
-              dispatchMapAction({ type: MAP_ACTIONS.DECREASE_CELL_SIZE })
-            }
-          >
-            Decrease Cell Size
-          </button>
+          {disableSizeToggles ? null : (
+            <>
+              <button
+                onClick={() =>
+                  dispatchMapAction({ type: MAP_ACTIONS.INCREASE_CELL_SIZE })
+                }
+              >
+                Increase Cell Size
+              </button>
+              <button
+                onClick={() =>
+                  dispatchMapAction({ type: MAP_ACTIONS.DECREASE_CELL_SIZE })
+                }
+              >
+                Decrease Cell Size
+              </button>
+            </>
+          )}
           <button
             onClick={() =>
               dispatchMapAction({ type: MAP_ACTIONS.TOGGLE_MAP_PAUSE })
@@ -59,7 +67,13 @@ export const Header = () => {
       </UpperButtonContainer>
       {selectedShip && (
         <LowerButtonContainer>
-          <button onClick={() => console.log("Wahooooo TODO")}>Set Sail</button>
+          <button
+            onClick={() => {
+              console.log("TODO: path query", { selectedShip, shipPath })
+            }}
+          >
+            Set Sail
+          </button>
           <button
             onClick={() => {
               dispatchShipAction({ type: SHIP_ACTIONS.UN_SELECT_SHIP })
