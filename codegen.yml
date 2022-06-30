@@ -3,6 +3,7 @@ schema: "http://localhost:8080/graphql" #TODO: have this pull locally
 generates:
   src/generated/graphql.ts:
     plugins:
-      - "typescript"
+      - typescript
+      - typescript-resolvers
     config:
       showUnusedMappers: true
