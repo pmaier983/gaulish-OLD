@@ -4,7 +4,8 @@ import { client } from "@/client"
 import type { Query } from "@/generated/graphql"
 
 // TODO: is there some built in variables type for gql somewhere?
-interface Variables {
+// TODO: move centrally?
+export interface Variables {
   [fieldName: string]: string | boolean | number | Variables
 }
 
