@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useReducer } from "react"
 
-import type { Ship, Tile } from "@/generated/graphql"
-import { useQuery } from "@/hooks/useQuery"
-import { gql } from "graphql-request"
+import { Ship, Tile, useGetShipsByUuidQuery } from "@/generated/graphql"
 import { useUserContext } from "./UserProvider"
+import { client } from "@/client"
 
 export const SHIP_ACTIONS = {
   SET_SHIPS: "SET_SHIPS",
@@ -127,48 +126,18 @@ export const ShipProvider: React.FC = ({ children }) => {
   // TODO: test, does passing the value as an object vs. an array effect re-renders?
   const [state, dispatchShipAction] = useReducer(reducer, initialState)
 
-  // TODO: is there a better way to do this?
-  const { isLoading } = useQuery({
-    key: "getShipsByUUID",
-    query: gql`
-      {
-        getShipsByUUID(uuid: ${user?.uuid}) {
-          id
-          ship_id
-          name
-          uuid
-          ship_type {
-            id
-            ship_type_id
-            name
-            cargo_capacity
-            inventory_slots
-            speed
-          }
-          city {
-            id
-            city_id
-            name
-            tile {
-              id
-              tile_id
-              x
-              y
-              type
-            }
-          }
-        }
-      }
-    `,
-    queryOptions: {
+  const { isLoading } = useGetShipsByUuidQuery(
+    client,
+    { uuid: user?.uuid },
+    {
       onSuccess: (res) => {
         dispatchShipAction({
           type: SHIP_ACTIONS.SET_SHIPS,
           payload: res.getShipsByUUID,
         })
       },
-    },
-  })
+    }
+  )
 
   if (isLoading) {
     return <div>Loading Ships...</div>

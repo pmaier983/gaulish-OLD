@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react"
 import styled, { css } from "styled-components"
-import { gql } from "graphql-request"
 
-import { useQuery } from "@/hooks/useQuery"
 import { getMapDimensions } from "@/utils/helperFunctions"
 import { buildMap } from "./utils"
 import { useMapContext } from "@/context/MapProvider"
 import { InnerRefreshingMap } from "./InnerRefreshingMap"
+import { useGetMapQuery } from "@/generated/graphql"
+import { client } from "@/client"
 
 const StyledWrapper = styled.div`
   grid-area: map;
@@ -25,53 +25,7 @@ export const Map = () => {
   } = useMapContext()
 
   // TODO: handle Error
-  // TODO: fix useQuery I mean really
-  // TODO: use .gql files
-  const { isLoading, data } = useQuery({
-    key: "getMap",
-    query: gql`
-      {
-        getAllTiles {
-          id
-          tile_id
-          x
-          y
-          type
-        }
-        getAllCities {
-          id
-          city_id
-          name
-          tile {
-            id
-            tile_id
-            x
-            y
-            type
-          }
-        }
-        getAllNpcs {
-          id
-          start_time
-          ship_type {
-            id
-            ship_type_id
-            name
-            cargo_capacity
-            inventory_slots
-            speed
-          }
-          path {
-            id
-            tile_id
-            type
-            x
-            y
-          }
-        }
-      }
-    `,
-  })
+  const { data, isLoading } = useGetMapQuery(client)
 
   const [mapWidth, mapHeight] = getMapDimensions(data?.getAllTiles)
 

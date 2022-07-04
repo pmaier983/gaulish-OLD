@@ -1,4 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* 🌶️ This is a generated file, do not modify! */
+// @ts-nocheck
+import { GraphQLClient } from "graphql-request"
+import { RequestInit } from "graphql-request/dist/types.dom"
+import { useQuery, UseQueryOptions } from "react-query"
 export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
 }
@@ -7,6 +14,16 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
+}
+
+function fetcher<TData, TVariables>(
+  client: GraphQLClient,
+  query: string,
+  variables?: TVariables,
+  headers?: RequestInit["headers"]
+) {
+  return async (): Promise<TData> =>
+    client.request<TData, TVariables>(query, variables, headers)
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -36,6 +53,31 @@ export type City = Node & {
   tile: Tile
 }
 
+export type Log = Node & {
+  __typename?: "Log"
+  id: Scalars["ID"]
+  log_id: Scalars["Int"]
+  text?: Maybe<Scalars["String"]>
+  type: Scalars["Int"]
+  uuid: Scalars["Int"]
+}
+
+export type Mutation = {
+  __typename?: "Mutation"
+  setLog: Scalars["Int"]
+  setShipPath?: Maybe<Scalars["Boolean"]>
+}
+
+export type MutationSetLogArgs = {
+  text: Scalars["String"]
+  type: Scalars["Int"]
+}
+
+export type MutationSetShipPathArgs = {
+  shipPath: Scalars["String"]
+  ship_id: Scalars["Int"]
+}
+
 export type Node = {
   id: Scalars["ID"]
 }
@@ -49,9 +91,18 @@ export type Npc = Node & {
   start_time: Scalars["Int"]
 }
 
+export type Path = Node & {
+  __typename?: "Path"
+  id: Scalars["ID"]
+  path: Scalars["String"]
+  path_id: Scalars["Int"]
+  ship_id: Scalars["Int"]
+  start_time: Scalars["Int"]
+}
+
 export type Point = {
-  x?: Maybe<Scalars["Int"]>
-  y?: Maybe<Scalars["Int"]>
+  x?: InputMaybe<Scalars["Int"]>
+  y?: InputMaybe<Scalars["Int"]>
 }
 
 export type Query = {
@@ -60,6 +111,7 @@ export type Query = {
   getAllNpcs: Array<Npc>
   getAllTiles: Array<Tile>
   getChatHistory: Array<Chat>
+  getRecentLogs?: Maybe<Array<Maybe<Log>>>
   getShipTypeFromId: ShipType
   getShipsByUUID: Array<Ship>
   getTileByID: Tile
@@ -70,34 +122,34 @@ export type Query = {
 }
 
 export type QueryGetChatHistoryArgs = {
-  room_id?: Maybe<Scalars["Int"]>
+  room_id?: InputMaybe<Scalars["Int"]>
   timestamp: Scalars["Int"]
 }
 
 export type QueryGetShipTypeFromIdArgs = {
-  shipTypeId?: Maybe<Scalars["Int"]>
+  shipTypeId?: InputMaybe<Scalars["Int"]>
 }
 
 export type QueryGetShipsByUuidArgs = {
-  uuid?: Maybe<Scalars["Int"]>
+  uuid?: InputMaybe<Scalars["Int"]>
 }
 
 export type QueryGetTileByIdArgs = {
-  tileId?: Maybe<Scalars["Int"]>
+  tileId?: InputMaybe<Scalars["Int"]>
 }
 
 export type QueryGetTilesAroundTileArgs = {
-  point?: Maybe<Point>
-  radius?: Maybe<Scalars["Int"]>
+  point?: InputMaybe<Point>
+  radius?: InputMaybe<Scalars["Int"]>
 }
 
 export type QueryGetTilesWithinRectangleArgs = {
-  pointA?: Maybe<Point>
-  pointB?: Maybe<Point>
+  pointA?: InputMaybe<Point>
+  pointB?: InputMaybe<Point>
 }
 
 export type QueryGetUserByUsernameArgs = {
-  username?: Maybe<Scalars["String"]>
+  username?: InputMaybe<Scalars["String"]>
 }
 
 export type Ship = Node & {
@@ -112,6 +164,7 @@ export type Ship = Node & {
 
 export type ShipType = Node & {
   __typename?: "ShipType"
+  attack_rating: Scalars["Int"]
   cargo_capacity: Scalars["Int"]
   id: Scalars["ID"]
   inventory_slots: Scalars["Int"]
@@ -144,3 +197,226 @@ export type User = Node & {
   username?: Maybe<Scalars["String"]>
   uuid?: Maybe<Scalars["Int"]>
 }
+
+export type GetMapQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetMapQuery = {
+  __typename?: "Query"
+  getAllTiles: Array<{
+    __typename?: "Tile"
+    id: string
+    tile_id: number
+    x: number
+    y: number
+    type: TileTypes
+  }>
+  getAllCities: Array<{
+    __typename?: "City"
+    id: string
+    city_id: number
+    name: string
+    tile: {
+      __typename?: "Tile"
+      id: string
+      tile_id: number
+      x: number
+      y: number
+      type: TileTypes
+    }
+  }>
+  getAllNpcs: Array<{
+    __typename?: "Npc"
+    id: string
+    start_time: number
+    ship_type: {
+      __typename?: "ShipType"
+      id: string
+      ship_type_id: number
+      name: string
+      cargo_capacity: number
+      inventory_slots: number
+      speed: number
+    }
+    path: Array<{
+      __typename?: "Tile"
+      id: string
+      tile_id: number
+      type: TileTypes
+      x: number
+      y: number
+    }>
+  }>
+}
+
+export type GetShipsByUuidQueryVariables = Exact<{
+  uuid?: InputMaybe<Scalars["Int"]>
+}>
+
+export type GetShipsByUuidQuery = {
+  __typename?: "Query"
+  getShipsByUUID: Array<{
+    __typename?: "Ship"
+    id: string
+    ship_id: number
+    name: string
+    uuid: number
+    ship_type: {
+      __typename?: "ShipType"
+      id: string
+      ship_type_id: number
+      name: string
+      cargo_capacity: number
+      inventory_slots: number
+      speed: number
+    }
+    city: {
+      __typename?: "City"
+      id: string
+      city_id: number
+      name: string
+      tile: {
+        __typename?: "Tile"
+        id: string
+        tile_id: number
+        x: number
+        y: number
+        type: TileTypes
+      }
+    }
+  }>
+}
+
+export type VerifyTokenQueryVariables = Exact<{ [key: string]: never }>
+
+export type VerifyTokenQuery = { __typename?: "Query"; verifyToken: boolean }
+
+export const GetMapDocument = `
+    query getMap {
+  getAllTiles {
+    id
+    tile_id
+    x
+    y
+    type
+  }
+  getAllCities {
+    id
+    city_id
+    name
+    tile {
+      id
+      tile_id
+      x
+      y
+      type
+    }
+  }
+  getAllNpcs {
+    id
+    start_time
+    ship_type {
+      id
+      ship_type_id
+      name
+      cargo_capacity
+      inventory_slots
+      speed
+    }
+    path {
+      id
+      tile_id
+      type
+      x
+      y
+    }
+  }
+}
+    `
+export const useGetMapQuery = <TData = GetMapQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables?: GetMapQueryVariables,
+  options?: UseQueryOptions<GetMapQuery, TError, TData>,
+  headers?: RequestInit["headers"]
+) =>
+  useQuery<GetMapQuery, TError, TData>(
+    variables === undefined ? ["getMap"] : ["getMap", variables],
+    fetcher<GetMapQuery, GetMapQueryVariables>(
+      client,
+      GetMapDocument,
+      variables,
+      headers
+    ),
+    options
+  )
+export const GetShipsByUuidDocument = `
+    query getShipsByUUID($uuid: Int) {
+  getShipsByUUID(uuid: $uuid) {
+    id
+    ship_id
+    name
+    uuid
+    ship_type {
+      id
+      ship_type_id
+      name
+      cargo_capacity
+      inventory_slots
+      speed
+    }
+    city {
+      id
+      city_id
+      name
+      tile {
+        id
+        tile_id
+        x
+        y
+        type
+      }
+    }
+  }
+}
+    `
+export const useGetShipsByUuidQuery = <
+  TData = GetShipsByUuidQuery,
+  TError = unknown
+>(
+  client: GraphQLClient,
+  variables?: GetShipsByUuidQueryVariables,
+  options?: UseQueryOptions<GetShipsByUuidQuery, TError, TData>,
+  headers?: RequestInit["headers"]
+) =>
+  useQuery<GetShipsByUuidQuery, TError, TData>(
+    variables === undefined
+      ? ["getShipsByUUID"]
+      : ["getShipsByUUID", variables],
+    fetcher<GetShipsByUuidQuery, GetShipsByUuidQueryVariables>(
+      client,
+      GetShipsByUuidDocument,
+      variables,
+      headers
+    ),
+    options
+  )
+export const VerifyTokenDocument = `
+    query verifyToken {
+  verifyToken
+}
+    `
+export const useVerifyTokenQuery = <TData = VerifyTokenQuery, TError = unknown>(
+  client: GraphQLClient,
+  variables?: VerifyTokenQueryVariables,
+  options?: UseQueryOptions<VerifyTokenQuery, TError, TData>,
+  headers?: RequestInit["headers"]
+) =>
+  useQuery<VerifyTokenQuery, TError, TData>(
+    variables === undefined ? ["verifyToken"] : ["verifyToken", variables],
+    fetcher<VerifyTokenQuery, VerifyTokenQueryVariables>(
+      client,
+      VerifyTokenDocument,
+      variables,
+      headers
+    ),
+    options
+  )

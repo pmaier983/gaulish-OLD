@@ -1,10 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { gql } from "graphql-request"
 
 import { LOCAL_STORAGE_KEYS } from "@/utils/constants"
-import { useQuery } from "@/hooks/useQuery"
 import { client } from "@/client"
-import type { User } from "@/generated/graphql"
+import { User, useVerifyTokenQuery } from "@/generated/graphql"
 import { LoginPage } from "@/pages/LoginPage"
 
 interface UserContextState {
@@ -74,14 +72,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // TODO verify token b4 getting user?
   const [isLoggedIn, setLoginStatus] = useState(false)
   const [user, setUser] = useState(getUser())
-  const { refetch, isLoading } = useQuery({
-    key: "verifyToken",
-    query: gql`
-      {
-        verifyToken
-      }
-    `,
-    queryOptions: {
+
+  const { refetch, isLoading } = useVerifyTokenQuery(
+    client,
+    {},
+    {
       enabled: false,
       onSuccess: (res) => {
         if (res.verifyToken) {
@@ -106,10 +101,10 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         window.history.replaceState({}, document.title, "/")
       },
     },
-    requestHeaders: {
+    {
       authorization: `Bearer ${getToken()}`,
-    },
-  })
+    }
+  )
 
   useEffect(() => {
     // If the token is in localStorage or
