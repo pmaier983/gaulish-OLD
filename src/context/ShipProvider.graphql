@@ -1,0 +1,28 @@
+query getShipsByUUID($uuid: Int) {
+  getShipsByUUID(uuid: $uuid) {
+    id
+    ship_id
+    name
+    uuid
+    ship_type {
+      id
+      ship_type_id
+      name
+      cargo_capacity
+      inventory_slots
+      speed
+    }
+    city {
+      id
+      city_id
+      name
+      tile {
+        id
+        tile_id
+        x
+        y
+        type
+      }
+    }
+  }
+}

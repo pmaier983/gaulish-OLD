@@ -1,0 +1,40 @@
+query getMap {
+  getAllTiles {
+    id
+    tile_id
+    x
+    y
+    type
+  }
+  getAllCities {
+    id
+    city_id
+    name
+    tile {
+      id
+      tile_id
+      x
+      y
+      type
+    }
+  }
+  getAllNpcs {
+    id
+    start_time
+    ship_type {
+      id
+      ship_type_id
+      name
+      cargo_capacity
+      inventory_slots
+      speed
+    }
+    path {
+      id
+      tile_id
+      type
+      x
+      y
+    }
+  }
+}

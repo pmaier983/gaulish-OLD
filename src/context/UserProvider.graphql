@@ -1,0 +1,3 @@
+query verifyToken {
+  verifyToken
+}
