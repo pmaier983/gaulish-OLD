@@ -1,16 +1,16 @@
 overwrite: true
 schema:
-  - http://localhost:8080/graphql:
+  - http://localhost:8080/graphql: #TODO: import from .env
       method: GET
-documents: 'src/**/*.graphql'
+documents: 'src/graphql/**/*.graphql'
 generates:
   src/generated/graphql.ts:
     plugins:
       - add:
           content: 
-            - /* eslint-disable @typescript-eslint/ban-ts-comment */
-            - /* 🌶️ This is a generated file, do not modify! */
+            - /* eslint-disable */
             - // @ts-nocheck
+            - /* 🌶️ This is a generated file, do not modify! */
       - typescript
       - typescript-operations
       - typescript-react-query

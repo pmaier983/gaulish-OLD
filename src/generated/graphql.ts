@@ -1,9 +1,14 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable */
 /* 🌶️ This is a generated file, do not modify! */
 // @ts-nocheck
 import { GraphQLClient } from "graphql-request"
 import { RequestInit } from "graphql-request/dist/types.dom"
-import { useQuery, UseQueryOptions } from "react-query"
+import {
+  useQuery,
+  useMutation,
+  UseQueryOptions,
+  UseMutationOptions,
+} from "react-query"
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -286,6 +291,16 @@ export type GetShipsByUuidQuery = {
   }>
 }
 
+export type SetSailMutationVariables = Exact<{
+  ship_id: Scalars["Int"]
+  shipPath: Scalars["String"]
+}>
+
+export type SetSailMutation = {
+  __typename?: "Mutation"
+  setShipPath?: boolean | null
+}
+
 export type VerifyTokenQueryVariables = Exact<{ [key: string]: never }>
 
 export type VerifyTokenQuery = { __typename?: "Query"; verifyToken: boolean }
@@ -397,6 +412,32 @@ export const useGetShipsByUuidQuery = <
       variables,
       headers
     ),
+    options
+  )
+export const SetSailDocument = `
+    mutation setSail($ship_id: Int!, $shipPath: String!) {
+  setShipPath(ship_id: $ship_id, shipPath: $shipPath)
+}
+    `
+export const useSetSailMutation = <TError = unknown, TContext = unknown>(
+  client: GraphQLClient,
+  options?: UseMutationOptions<
+    SetSailMutation,
+    TError,
+    SetSailMutationVariables,
+    TContext
+  >,
+  headers?: RequestInit["headers"]
+) =>
+  useMutation<SetSailMutation, TError, SetSailMutationVariables, TContext>(
+    ["setSail"],
+    (variables?: SetSailMutationVariables) =>
+      fetcher<SetSailMutation, SetSailMutationVariables>(
+        client,
+        SetSailDocument,
+        variables,
+        headers
+      )(),
     options
   )
 export const VerifyTokenDocument = `

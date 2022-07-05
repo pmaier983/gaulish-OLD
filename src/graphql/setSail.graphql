@@ -1,0 +1,3 @@
+mutation setSail($ship_id: Int!, $shipPath: String!) {
+  setShipPath(ship_id: $ship_id, shipPath: $shipPath)
+}

@@ -5,6 +5,9 @@ import { useMapContext } from "@/context/MapProvider"
 import { useErrorContext } from "@/context/ErrorProvider"
 import { useShipContext } from "@/context/ShipProvider"
 import { Error } from "@/components/Error"
+import { useSetSailMutation } from "@/generated/graphql"
+import { client } from "@/client"
+import { shipPathArrayToString } from "@/utils/utils"
 
 const StyledWrapper = styled.div`
   grid-area: header;
@@ -32,6 +35,8 @@ export const Header = () => {
   const { dispatchShipAction, SHIP_ACTIONS, selectedShip, shipPath } =
     useShipContext()
   const { logoutUser } = useUserContext()
+
+  const { mutate } = useSetSailMutation(client)
 
   return (
     <StyledWrapper>
@@ -69,7 +74,10 @@ export const Header = () => {
         <LowerButtonContainer>
           <button
             onClick={() => {
-              console.log("TODO: path query", { selectedShip, shipPath })
+              mutate({
+                ship_id: selectedShip.ship_id,
+                shipPath: shipPathArrayToString(shipPath),
+              })
             }}
           >
             Set Sail

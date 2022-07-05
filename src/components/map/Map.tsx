@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react"
 import styled, { css } from "styled-components"
 
-import { getMapDimensions } from "@/utils/helperFunctions"
+import { getMapDimensions } from "@/utils/utils"
 import { buildMap } from "./utils"
 import { useMapContext } from "@/context/MapProvider"
 import { InnerRefreshingMap } from "./InnerRefreshingMap"

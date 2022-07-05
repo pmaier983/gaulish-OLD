@@ -4,7 +4,7 @@ import styled, { css } from "styled-components"
 import { Tile, TileTypes } from "@/generated/graphql"
 import type { Cell as MapCell } from "./utils"
 import { InnerCell } from "./InnerCell"
-import { getStrongestNpc, upperCaseFirstLetter } from "@/utils/helperFunctions"
+import { getStrongestNpc, upperCaseFirstLetter } from "@/utils/utils"
 
 export enum SPECIAL_TILE_TYPE {
   START = "START",
