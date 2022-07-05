@@ -44,3 +44,22 @@ export const getStrongestNpc = (npcs?: Npc[]): Npc | undefined => {
     return acc
   }, npcs[0])
 }
+
+export const doesPathIncludeTile = ({
+  path,
+  tile,
+}: {
+  path: Tile[]
+  tile: Tile
+}) =>
+  path.reduce((acc, cur) => {
+    if (acc) return acc
+    return tile.x === cur.x && tile.y === cur.y
+  }, false)
+
+export const shipPathArrayToString = (shipPath: Tile[]) => {
+  return shipPath.reduce((acc, cur, i) => {
+    if (i === 0) return acc + cur.x + "," + cur.y
+    return acc + "|" + cur.x + "," + cur.y
+  }, "")
+}

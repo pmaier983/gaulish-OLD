@@ -94,15 +94,3 @@ export const updateMap = ({
 
   return mapClone
 }
-
-export const doesPathIncludeTile = ({
-  path,
-  tile,
-}: {
-  path: Tile[]
-  tile: Tile
-}) =>
-  path.reduce((acc, cur) => {
-    if (acc) return acc
-    return tile.x === cur.x && tile.y === cur.y
-  }, false)
