@@ -59,7 +59,7 @@ export const doesPathIncludeTile = ({
 
 export const shipPathArrayToString = (shipPath: Tile[]) => {
   return shipPath.reduce((acc, cur, i) => {
-    if (i === 0) return acc + cur.x + "," + cur.y
-    return acc + "|" + cur.x + "," + cur.y
+    if (i === 0) return acc + cur.x + "," + cur.y + "," + cur.tile_id
+    return acc + "|" + cur.x + "," + cur.y + "," + cur.tile_id
   }, "")
 }
