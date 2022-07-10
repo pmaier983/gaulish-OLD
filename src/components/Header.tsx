@@ -74,6 +74,7 @@ export const Header = () => {
         <LowerButtonContainer>
           <button
             onClick={() => {
+              console.log("Set Sail!")
               mutate({
                 ship_id: selectedShip.ship_id,
                 shipPath: shipPathArrayToString(shipPath),
